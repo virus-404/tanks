@@ -1,4 +1,4 @@
 all: 
-	gcc board.cpp -o board -lglut -lGLU -lGL -lm
+	gcc board.cpp -o board.o -lglut -lGLU -lGL -lm
 clean:
 	rm board 
