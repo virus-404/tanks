@@ -1,11 +1,34 @@
-#include <cstdio>
-#include <GL/glut.h>
+#include <iostream>
+#include <vector>
 
-#define ROWS 20
-#define COLUMNS 30
+using namespace std;
 
-int main(int argc, char const *argv[])
+typedef std::vector<std::vector<int>> Map;
+Map createMap(int,int); 
+
+class Board
 {
-    printf("Hello world!");
-    return 0;
+    private:
+        Map map;
+    public:
+        Board(int, int);
+        void printBoard();
+};
+
+Board::Board(int height, int width)
+{
+   this->map = createMap(height, width);
 }
+
+void Board::printBoard()
+{
+    for (size_t i = 0; i < Board::map.size(); i++)
+        for (size_t j = 0; j < Board::map[i].size(); j++)
+            std::cout << map[i][j] << ' ';
+}
+
+Map createMap(int m, int n)
+{
+    
+}
+
