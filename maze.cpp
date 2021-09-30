@@ -1,12 +1,13 @@
-#include "string"
-#include "vector"
-#include "unordered_map"
-#include "queue"
-#include "cstdlib"
-#include "ctime"
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
-#include "algorithm"
-#include "stack"
+#include <algorithm>
+#include <stack>
+#include <sys/wait.h>
 
 using namespace std;
 
@@ -17,9 +18,11 @@ class Maze
         void showMaze(vector<vector<char>> &map);
     private:
         void _maze(vector<vector<char>> &map, int i, int j); //Use DFS
+        void refineMaze(vector<vector<char>> &map, double percent);
         int countVisitedNeighbor(vector<vector<char>> &map, int i, int j);
         void shuffle(int a[], int n);
         void swap(int &a, int &b);
+        int randInt(int min, int max);
 };
 
 void Maze::maze(vector<vector<char>> &map)
@@ -33,12 +36,13 @@ void Maze::maze(vector<vector<char>> &map)
         }
     }
     _maze(map, 0, 0);
+    refineMaze(map, 20);
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {
-    for (int i = 0; i < map.size(); ++i)
+    for (int i = 0; i < map.size(); ++i) //heigh
     {
-        for (int j = 0; j < map[0].size(); ++j)
+        for (int j = 0; j < map[0].size(); ++j) //width
         {
             cout << map[i][j];
         }
@@ -76,6 +80,41 @@ void Maze::_maze(vector<vector<char>> &map, int i, int j)
         _maze(map, ni, nj);
     }
 }
+void Maze::refineMaze(vector<vector<char>> &map, double percent)
+{
+    int height = map.size(); //represented in x axis
+    int width = map[0].size(); //represented in y axis
+    vector<vector<int>> wallsList;
+
+    if (percent > 100 || percent < 0) return;
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
+            if (map[i][j] == 'X') wallsList.push_back({i,j});
+        
+    int m; //temporal
+
+    for (int i = 0; (i / height*width) * 100 < percent; i++)
+    {
+        m = randInt(0, wallsList.size());
+        map[wallsList[m][0]][wallsList[m][1]] = ' ';
+        wallsList.erase(wallsList.begin() + m  );
+    }
+
+    std::vector<char> tmp (width + 1, 'X');
+
+    // vertical laterals
+    map.emplace(map.begin(), tmp); 
+    height = map.size();
+    map.emplace_back(tmp);
+
+    // horizontal laterals
+    for (int i = 1; i < height - 1; i++)
+    {
+        map[i].emplace(map[i].begin(), 'X');
+        map[i].emplace(map[i].begin() + width, 'X'); //width was updated so it is within the bounds.
+    }
+    
+}
 int Maze::countVisitedNeighbor(vector<vector<char>> &map, int i, int j)
 {
     int direct[][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
@@ -104,4 +143,8 @@ void Maze::swap(int &a, int &b)
     int c = a;
     a = b;
     b = c;
+}
+int Maze::randInt(int min, int max)
+{
+    return std::rand() % (max + 1 - min) + min;
 }
