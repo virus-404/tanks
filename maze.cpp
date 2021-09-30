@@ -18,7 +18,7 @@ class Maze
         void showMaze(vector<vector<char>> &map);
     private:
         void _maze(vector<vector<char>> &map, int i, int j); //Use DFS
-        void refineMaze(vector<vector<char>> &map, double percent);
+        void refineMaze(vector<vector<char>> &map, float percent);
         int countVisitedNeighbor(vector<vector<char>> &map, int i, int j);
         void shuffle(int a[], int n);
         void swap(int &a, int &b);
@@ -36,7 +36,7 @@ void Maze::maze(vector<vector<char>> &map)
         }
     }
     _maze(map, 0, 0);
-    refineMaze(map, 20);
+    refineMaze(map, 90);
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {
@@ -80,7 +80,7 @@ void Maze::_maze(vector<vector<char>> &map, int i, int j)
         _maze(map, ni, nj);
     }
 }
-void Maze::refineMaze(vector<vector<char>> &map, double percent)
+void Maze::refineMaze(vector<vector<char>> &map, float percent)
 {
     int height = map.size(); //represented in x axis
     int width = map[0].size(); //represented in y axis
@@ -92,12 +92,14 @@ void Maze::refineMaze(vector<vector<char>> &map, double percent)
             if (map[i][j] == 'X') wallsList.push_back({i,j});
         
     int m; //temporal
+    percent = (100 - percent) / 100;
+    int orginalSize = wallsList.size();
 
-    for (int i = 0; (i / height*width) * 100 < percent; i++)
-    {
-        m = randInt(0, wallsList.size());
+    while ((float) wallsList.size() / orginalSize > percent)
+    {   
+        m = randInt(0, wallsList.size() - 1); 
         map[wallsList[m][0]][wallsList[m][1]] = ' ';
-        wallsList.erase(wallsList.begin() + m  );
+        wallsList.erase(wallsList.begin() + m );
     }
 
     std::vector<char> tmp (width + 1, 'X');
@@ -108,7 +110,7 @@ void Maze::refineMaze(vector<vector<char>> &map, double percent)
     map.emplace_back(tmp);
 
     // horizontal laterals
-    for (int i = 1; i < height - 1; i++)
+    for (int i = 1; i < height; i++)
     {
         map[i].emplace(map[i].begin(), 'X');
         map[i].emplace(map[i].begin() + width, 'X'); //width was updated so it is within the bounds.
