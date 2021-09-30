@@ -9,26 +9,21 @@ typedef std::vector<char> Row;
 
 class Board
 {
-    private:
-        Map map;
     public:
+        Map map;
         Board(int, int);
-        void printBoard();
 };
 
 Board::Board(int height, int width)
 {
     Maze maze;
-    srand(time(0));
     Row row = Row(width);
-    Map tmp;
-    for (int i = 0; i < height; ++i) tmp.push_back(row);
-    maze.maze(tmp);
-    maze.showMaze(tmp);
+    
+    srand(time(0));
+    for (int i = 0; i < height; ++i) map.push_back(row);
+    
+    maze.maze(map);
+    maze.showMaze(map);
 
 }
-void Board::printBoard()
-{
-}
-
 
