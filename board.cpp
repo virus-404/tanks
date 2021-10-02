@@ -12,9 +12,11 @@ class Board
     public:
         Map map;
         Board(int, int);
+    private:
+        void respawnPointGenerator();
 };
 
-Board::Board(int height, int width)
+Board::Board(int height, int width). 
 {
     Maze maze;
     Row row = Row(width);
@@ -24,6 +26,10 @@ Board::Board(int height, int width)
     
     maze.maze(map);
     maze.showMaze(map);
-
+    respawnPointGenerator();
 }
 
+void Board::respawnPointGenerator()
+{
+
+}

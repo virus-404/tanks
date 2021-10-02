@@ -36,7 +36,7 @@ void Maze::maze(vector<vector<char>> &map)
         }
     }
     _maze(map, 0, 0);
-    refineMaze(map, 20);
+    refineMaze(map, 30);
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {

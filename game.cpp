@@ -2,8 +2,8 @@
 #include <GL/glut.h>
 #include "./board.cpp"
 
-#define COLUMNS 10
-#define ROWS 10
+#define COLUMNS 20
+#define ROWS 20
 #define WIDTH 300
 #define HEIGHT 300
 
