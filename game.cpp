@@ -1,13 +1,6 @@
-//mac
-#define GL_SILENCE_DEPRECATION
-
 #include <iostream>
-//linux
-//#include <GL/glut.h>
-//mac
-#include <OpenGL/glu.h>
-//mac
-#include <GLUT/glut.h>
+
+#include "./opengl.h"
 #include "./board.cpp"
 #include "./tankPlayer.cpp"
 #include "./tankEnemy.cpp"

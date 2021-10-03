@@ -1,5 +1,4 @@
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
+#include "./opengl.h"
 
 #define MOVE 1
 #define QUIET 2
