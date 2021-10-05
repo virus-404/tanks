@@ -40,14 +40,13 @@ void Maze::maze(vector<vector<char>> &map)
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {
-    for (int i = 0; i < map.size(); ++i) //heigh
-    {
-        for (int j = 0; j < map[0].size(); ++j) //width
-        {
+    for (int i = 0; i < map.size(); i++) {              //heigh
+        for (int j = map[0].size() - 1; j >= 0; j--) {  //width
             cout << map[i][j];
         }
         cout << endl;
     }
+
 }
 void Maze::_maze(vector<vector<char>> &map, int i, int j)
 {

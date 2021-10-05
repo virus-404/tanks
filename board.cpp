@@ -24,9 +24,12 @@ Board::Board(int height, int width) {
     for (int i = 0; i < height; ++i) map.push_back(row);
 
     maze.maze(map);
-    maze.showMaze(map);
     respawnPointGenerator();
+    maze.showMaze(map);
 }
 
 void Board::respawnPointGenerator() {
+    map[map.size()-2][1] = 'E';
+    map[1][map.size() -2] = 'P';
+
 }

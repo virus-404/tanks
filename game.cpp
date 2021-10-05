@@ -59,10 +59,21 @@ void display() {
 
     for (i = 0; i < board->map.size(); i++)
         for (j = 0; j < board->map[i].size(); j++)
-            if (board->map[i][j] == 'X') {
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
+            if (board->map[i][j] != ' ') {
+                switch (board->map[i][j]) {
+                    case 'E':
+                        glColor3f(1, 0, 0);
+                        break;
+                    case 'P':
+                        glColor3f(0.294, 0.325, 0.125);
+                        break;
+                    default:
+                        glColor3f(0.8, 0.8, 0.8);
+                        break;
+                }
 
+                glBegin(GL_QUADS);
+                
                 glVertex2i(i * WIDTH / COLUMNS, j * HEIGHT / ROWS);
                 glVertex2i((i + 1) * WIDTH / COLUMNS, j * HEIGHT / ROWS);
                 glVertex2i((i + 1) * WIDTH / COLUMNS, (j + 1) * HEIGHT / ROWS);
@@ -70,6 +81,7 @@ void display() {
 
                 glEnd();
             }
+
     glutSwapBuffers();
 }
 
