@@ -1,43 +1,38 @@
 #include <iostream>
 
-#include "./opengl.h"
-#include "./board.cpp"
-#include "./tankPlayer.cpp"
-#include "./tankEnemy.cpp"
+#include "board.cpp"
+#include "opengl.h"
+#include "tank.cpp"
 
 #define COLUMNS 20
 #define ROWS 20
 #define WIDTH 300
 #define HEIGHT 300
 
-
 using namespace std;
-
 
 int keyflag = 0;
 // It is needed a cell width as a translation of a tank.
 int cell_width;
 long last_t = 0;
 
-
 Board *board;
-TankPlayer player;
-TankEnemy enemy;
-
+Tank *player;
+Tank *enemy;
 
 void display();
 void keyboard(unsigned char c, int x, int y);
 void idle();
 
-
-int main(int argc, char *argv[])
-{
-    board = new Board(COLUMNS -2, ROWS -1); // -2 for borders
-    // TODO: One square of the upper left quadrant of the maze needs to be corridor and connected with other corridors.
-    // It is needed to save the initial position of the player as enemy's objective.
+int main(int argc, char *argv[]) {
+    board = new Board(COLUMNS - 2, ROWS - 1);  // -2 for borders
+    player = new Tank(new float[3]{0, 255, 30});
+    enemy = new Tank(new float[3]{255, 0, 0});
+    //TODO: One square of the upper left quadrant of the maze needs to be corridor and connected with other corridors.
+    //It is needed to save the initial position of the player as enemy's objective.
     //player.set_position(x_initPosPlayer, y_initPosPlayer);
-    // TODO: One square of the lower right quadrant of the maze needs to be corridor and connected with other corridors.
-    // It is needed to save the initial position of the enemy as player's objective.
+    //TODO: One square of the lower right quadrant of the maze needs to be corridor and connected with other corridors.
+    //It is needed to save the initial position of the enemy as player's objective.
     //enemy.set_position(x_initPosEnemy, y_initPosEnemy);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -56,9 +51,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
-void display()
-{
+void display() {
     int i, j;
 
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -66,8 +59,7 @@ void display()
 
     for (i = 0; i < board->map.size(); i++)
         for (j = 0; j < board->map[i].size(); j++)
-            if (board->map[i][j] == 'X')
-            {
+            if (board->map[i][j] == 'X') {
                 glColor3f(0.8, 0.8, 0.8);
                 glBegin(GL_QUADS);
 
@@ -81,39 +73,30 @@ void display()
     glutSwapBuffers();
 }
 
-
-void keyboard(unsigned char c, int x, int y)
-{
+void keyboard(unsigned char c, int x, int y) {
     if (c == 'w') {
-        player.init_movement(player.getX_CurrentPosition(), player.getY_CurrentPosition() + cell_width, 160);
+        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() + cell_width, 160);
+    } else if (c == 'd') {
+        player->init_movement(player->getX_CurrentPosition() + cell_width, player->getY_CurrentPosition(), 160);
+    } else if (c == 'a') {
+        player->init_movement(player->getX_CurrentPosition() - cell_width, player->getY_CurrentPosition(), 160);
+    } else if (c == 's') {
+        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() - cell_width, 160);
     }
-    else if (c == 'd') {
-        player.init_movement(player.getX_CurrentPosition() + cell_width, player.getY_CurrentPosition(), 160);
-    }
-    else if (c == 'a')
-    {
-        player.init_movement(player.getX_CurrentPosition() - cell_width, player.getY_CurrentPosition(), 160);
-    }
-    else if (c == 's') {
-        player.init_movement(player.getX_CurrentPosition(), player.getY_CurrentPosition() - cell_width, 160);
-    }
-    
+
     glutPostRedisplay();
 }
 
-
-void idle() 
-{
+void idle() {
     long t;
 
-    t = glutGet(GLUT_ELAPSED_TIME); 
+    t = glutGet(GLUT_ELAPSED_TIME);
 
     if (last_t == 0)
-        last_t=t;
-    else
-    {
-        player.integrate(t - last_t);
-        enemy.integrate(t - last_t);
+        last_t = t;
+    else {
+        player->integrate(t - last_t);
+        enemy->integrate(t - last_t);
         last_t = t;
     }
 

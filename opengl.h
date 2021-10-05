@@ -7,3 +7,6 @@
 #else
     #error "OS not supported!"
 #endif
+
+#define MOVE 1
+#define QUIET 2

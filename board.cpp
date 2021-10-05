@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 #include "./maze.cpp"
 
 using namespace std;

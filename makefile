@@ -1,8 +1,8 @@
+compile:
+	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm
 all: 
 	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm
 	./game.o
-compile:
-	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm
 clean:
 	rm game.o
 mac:
