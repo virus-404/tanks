@@ -4,15 +4,9 @@
 #include "opengl.h"
 #include "tank.cpp"
 
-#define COLUMNS 20
-#define ROWS 20
-#define WIDTH 300
-#define HEIGHT 300
-
 using namespace std;
 
-int keyflag = 0;
-// It is needed a cell width as a translation of a tank.
+int keyflag = 0;  // It is needed a cell width as a translation of a tank.
 int cell_width;
 long last_t = 0;
 
@@ -21,19 +15,17 @@ Tank *player;
 Tank *enemy;
 
 void display();
-void keyboard(unsigned char c, int x, int y);
+void keyboard(unsigned char, int, int);
 void idle();
+void drawTank(Tank *, int, int);
 
 int main(int argc, char *argv[]) {
-    board = new Board(COLUMNS - 2, ROWS - 1);  // -2 for borders
-    player = new Tank(new float[3]{0, 255, 30});
-    enemy = new Tank(new float[3]{255, 0, 0});
-    //TODO: One square of the upper left quadrant of the maze needs to be corridor and connected with other corridors.
-    //It is needed to save the initial position of the player as enemy's objective.
-    //player.set_position(x_initPosPlayer, y_initPosPlayer);
-    //TODO: One square of the lower right quadrant of the maze needs to be corridor and connected with other corridors.
-    //It is needed to save the initial position of the enemy as player's objective.
-    //enemy.set_position(x_initPosEnemy, y_initPosEnemy);
+    board = new Board(COLUMNS, ROWS);
+    player = new Tank(new float[3]{0.20, 0.80, 0.20});
+    enemy = new Tank(new float[3]{0.83, 0.00, 0.00});
+    player->set_position(1, ROWS - 2);
+    enemy->set_position(COLUMNS - 2, 1);
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowPosition(50, 50);
@@ -62,7 +54,7 @@ void display() {
             if (board->map[i][j] != ' ') {
                 switch (board->map[i][j]) {
                     case 'E':
-                        glColor3f(1, 0, 0);
+                        glColor3f(0.66, 0, 0);
                         break;
                     case 'P':
                         glColor3f(0.294, 0.325, 0.125);
@@ -73,15 +65,14 @@ void display() {
                 }
 
                 glBegin(GL_QUADS);
-                
                 glVertex2i(i * WIDTH / COLUMNS, j * HEIGHT / ROWS);
                 glVertex2i((i + 1) * WIDTH / COLUMNS, j * HEIGHT / ROWS);
                 glVertex2i((i + 1) * WIDTH / COLUMNS, (j + 1) * HEIGHT / ROWS);
                 glVertex2i(i * WIDTH / COLUMNS, (j + 1) * HEIGHT / ROWS);
-
                 glEnd();
             }
-
+    player->draw();
+    enemy->draw();
     glutSwapBuffers();
 }
 

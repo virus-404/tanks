@@ -1,3 +1,4 @@
 .editorconfig
 .vscode
+vrf.cpp
 *.[oa]

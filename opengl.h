@@ -8,5 +8,10 @@
     #error "OS not supported!"
 #endif
 
+#define COLUMNS 20
+#define ROWS 20
+#define WIDTH 300
+#define HEIGHT 300
+
 #define MOVE 1
 #define QUIET 2

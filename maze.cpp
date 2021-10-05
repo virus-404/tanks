@@ -36,7 +36,7 @@ void Maze::maze(vector<vector<char>> &map)
         }
     }
     _maze(map, 0, 0);
-    refineMaze(map, 30);
+    refineMaze(map, 20);
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {
@@ -85,7 +85,7 @@ void Maze::refineMaze(vector<vector<char>> &map, float percent)
     int width = map[0].size(); //represented in y axis
     vector<vector<int>> wallsList;
 
-    if (percent > 100 || percent < 0) return;
+    if (percent > 100 || percent < 15) return;
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
             if (map[i][j] == 'X') wallsList.push_back({i,j});
