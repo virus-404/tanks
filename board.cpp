@@ -12,9 +12,17 @@ class Board {
    public:
     Map map;
     Board(int, int);
+    int getPlayerRespawnPoint_X();
+    int getPlayerRespawnPoint_Y();
+    int getEnemyRespawnPoint_X();
+    int getEnemyRespawnPoint_Y();
 
    private:
     void respawnPointGenerator();
+    int playerRespawnPoint_X;
+    int playerRespawnPoint_Y;
+    int enemyRespawnPoint_X;
+    int enemyRespawnPoint_Y;
 };
 
 Board::Board(int height, int width) {
@@ -29,9 +37,27 @@ Board::Board(int height, int width) {
     maze.showMaze(map);
 }
 
+int Board::getPlayerRespawnPoint_X(){
+    return playerRespawnPoint_X;
+}
+
+int Board::getPlayerRespawnPoint_Y(){
+    return playerRespawnPoint_Y;
+}
+
+int Board::getEnemyRespawnPoint_X(){
+    return enemyRespawnPoint_X;
+}
+
+int Board::getEnemyRespawnPoint_Y(){
+    return enemyRespawnPoint_Y;
+}
+
 void Board::respawnPointGenerator() {
     int i = map.size() - 2;
     int j = 1;
+    enemyRespawnPoint_X = i;
+    enemyRespawnPoint_Y = j;
     map[i][j] = 'E';
     bool connected = false;
 
@@ -46,7 +72,9 @@ void Board::respawnPointGenerator() {
     connected = false; 
     i = 1; 
     j = map.size() - 2;
-    map[1][map.size() - 2] = 'P';
+    playerRespawnPoint_X = i;
+    playerRespawnPoint_Y = j;
+    map[i][j] = 'P';
 
     while (!connected) {
         if (map[i + 1][j] == ' ' || map[i][j - 1] == ' ')

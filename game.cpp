@@ -7,7 +7,8 @@
 using namespace std;
 
 int keyflag = 0;  // It is needed a cell width as a translation of a tank.
-int cell_width;
+int cell_width = WIDTH / COLUMNS;
+int cell_heigth = HEIGHT / ROWS;
 long last_t = 0;
 
 Board *board;
@@ -17,7 +18,11 @@ Tank *enemy;
 void display();
 void keyboard(unsigned char, int, int);
 void idle();
-void drawTank(Tank *, int, int);
+bool checkWall(int, int);
+bool checkPlayerGoal(int, int);
+bool checkEnemyGoal(int, int);
+void moveEnemy();
+void swap(int &a, int &b);
 
 int main(int argc, char *argv[]) {
     board = new Board(COLUMNS, ROWS);
@@ -77,17 +82,147 @@ void display() {
 }
 
 void keyboard(unsigned char c, int x, int y) {
+    // TODO: movement??
+    float movement = 1;
+    float nextXPlayer;
+    float nextYPlayer;
+    // UP
     if (c == 'w') {
-        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() + cell_width, 160);
-    } else if (c == 'd') {
-        player->init_movement(player->getX_CurrentPosition() + cell_width, player->getY_CurrentPosition(), 160);
+        nextXPlayer = player->getX_CurrentPosition();
+        nextYPlayer = player->getY_CurrentPosition() + movement;
+        if (checkWall(nextXPlayer, nextYPlayer))
+        {
+            player->init_movement(nextXPlayer, nextYPlayer, 1000);
+        }
+        if (checkPlayerGoal(nextXPlayer, nextYPlayer))
+        {
+            // Player wins
+            // End game or reset game
+        }
+    }
+    // RIGHT
+    else if (c == 'd') {
+        nextXPlayer = player->getX_CurrentPosition() + movement;
+        nextYPlayer = player->getY_CurrentPosition();
+        if (checkWall(nextXPlayer, nextYPlayer))
+        {
+            player->init_movement(nextXPlayer, nextYPlayer, 1000);
+        }
+        if (checkPlayerGoal(nextXPlayer, nextYPlayer))
+        {
+            // Player wins
+            // End game or reset game
+        }
+    // LEFT
     } else if (c == 'a') {
-        player->init_movement(player->getX_CurrentPosition() - cell_width, player->getY_CurrentPosition(), 160);
+        nextXPlayer = player->getX_CurrentPosition() - movement;
+        nextYPlayer = player->getY_CurrentPosition();
+        if (checkWall(nextXPlayer, nextYPlayer))
+        {
+            player->init_movement(nextXPlayer, nextYPlayer, 1000);
+        }
+        if (checkPlayerGoal(nextXPlayer, nextYPlayer))
+        {
+            // Player wins
+            // End game or reset game
+        }
+    // DOWN
     } else if (c == 's') {
-        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() - cell_width, 160);
+        nextXPlayer = player->getX_CurrentPosition();
+        nextYPlayer = player->getY_CurrentPosition() - movement;
+        if (checkWall(nextXPlayer, nextYPlayer))
+        {
+            player->init_movement(nextXPlayer, nextYPlayer, 1000);
+        }
+        if (checkPlayerGoal(nextXPlayer, nextYPlayer))
+        {
+            // Player wins
+            // End game or reset game
+        }
     }
 
+    moveEnemy();
+
     glutPostRedisplay();
+}
+
+void moveEnemy() {
+    int direction[4];
+    direction[0] = 0; // UP
+    direction[1] = 1; // RIGHT
+    direction[2] = 2; // LEFT
+    direction[3] = 3; // DOWN
+
+    for (int i = 0; i < 4; i++) {
+        int r = rand() & 3;
+        swap(direction[r], direction[i]);
+    }
+
+    // TODO: movement??
+    float movement = 1;
+    float nextXEnemy;
+    float nextYEnemy;
+
+    switch (direction[rand()&3]) {
+        case 0:
+            nextXEnemy= enemy->getX_CurrentPosition();
+            nextYEnemy = enemy->getY_CurrentPosition() + movement;
+            if (checkWall(nextXEnemy, nextYEnemy))
+            {
+                enemy->init_movement(nextXEnemy, nextYEnemy, 1000);
+            }
+            if (checkEnemyGoal(nextXEnemy, nextYEnemy))
+            {
+                // Enemy wins, Player loses
+                // End game or reset game
+            }
+            break;
+        case 1:
+            nextXEnemy = enemy->getX_CurrentPosition() + movement;
+            nextYEnemy = enemy->getY_CurrentPosition();
+            if (checkWall(nextXEnemy, nextYEnemy))
+            {
+                enemy->init_movement(nextXEnemy, nextYEnemy, 1000);
+            }
+            if (checkEnemyGoal(nextXEnemy, nextYEnemy))
+            {
+                // Enemy wins, Player loses
+                // End game or reset game
+            }
+            break;
+        case 2:
+            nextXEnemy = enemy->getX_CurrentPosition() - movement;
+            nextYEnemy = enemy->getY_CurrentPosition();
+            if (checkWall(nextXEnemy, nextYEnemy))
+            {
+                enemy->init_movement(nextXEnemy, nextYEnemy, 1000);
+            }
+            if (checkEnemyGoal(nextXEnemy, nextYEnemy))
+            {
+                // Enemy wins, Player loses
+                // End game or reset game
+            }
+            break;
+        case 3:
+            nextXEnemy = enemy->getX_CurrentPosition();
+            nextYEnemy = enemy->getY_CurrentPosition() - movement;
+            if (checkWall(nextXEnemy, nextYEnemy))
+            {
+                enemy->init_movement(nextXEnemy, nextYEnemy, 1000);
+            }
+            if (checkEnemyGoal(nextXEnemy, nextYEnemy))
+            {
+                // Enemy wins, Player loses
+                // End game or reset game
+            }
+            break;
+    }
+}
+
+void swap(int &a, int &b) {
+    int c = a;
+    a = b;
+    b = c;
 }
 
 void idle() {
@@ -104,4 +239,17 @@ void idle() {
     }
 
     glutPostRedisplay();
+}
+
+bool checkWall(int x, int y) {
+	// if not a wall return true
+    return board->map[x][y] == ' ';
+}
+
+bool checkPlayerGoal(int x, int y) {
+    return x == board->getEnemyRespawnPoint_X() && y == board->getEnemyRespawnPoint_Y();
+}
+
+bool checkEnemyGoal(int x, int y) {
+    return x == board->getPlayerRespawnPoint_X() && y == board->getPlayerRespawnPoint_Y();
 }
