@@ -1,4 +1,6 @@
 #include "./opengl.h"
+
+#include "board.cpp"
 #pragma once
 
 using namespace std;
@@ -10,29 +12,22 @@ class Tank {
     int state;
     long time_remaining;
     float *color;
+    char id;
 
    public:
-    Tank(float *);
-    float getX_CurrentPosition();
-    float getY_CurrentPosition();
+    Tank(float*, char);
     int get_state();
     void set_position(int, int);
     void init_movement(int, int, int);
     void integrate(long);
     void draw();
+    void keyPressed(unsigned char, Board*);
 };
 
-Tank::Tank(float *color) {
+Tank::Tank(float *color, char id) {
     this->color = color;
     this->state = QUIET;
-}
-
-float Tank::getX_CurrentPosition() {
-    return this->x;
-}
-
-float Tank::getY_CurrentPosition() {
-    return this->y;
+    this->id = id;
 }
 
 int Tank::get_state() {
@@ -77,4 +72,35 @@ void Tank::draw() {
     glVertex2f((x + 1) * WIDTH / COLUMNS - w_blank, (y + 1) * HEIGHT / ROWS - h_blank);
     glVertex2f(x * WIDTH / COLUMNS + w_blank, (y + 1) * HEIGHT / ROWS - h_blank);
     glEnd();
+}
+
+void Tank::keyPressed(unsigned char key, Board* board) {
+    if (key == 'w')
+    {
+        if (board->isValid(this->x, this->y + 1, this->id))
+        {
+            this->init_movement(this->x, this->y + 1, 1000);
+        }
+    }
+    else if (key == 'd')
+    {
+        if (board->isValid(this->x + 1, this->y, this->id))
+        {
+            this->init_movement(this->x + 1, this->y, 1000);
+        }
+    }
+    else if (key == 'a')
+    {
+        if (board->isValid(this->x - 1, this->y, this->id))
+        {
+            this->init_movement(this->x - 1, this->y, 1000);
+        }
+    }
+    else if (key == 's')
+    {
+        if (board->isValid(this->x, this->y - 1, this->id))
+        {
+            this->init_movement(this->x, this->y - 1, 1000);
+        }
+    }
 }
