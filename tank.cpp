@@ -1,6 +1,7 @@
 #include "./opengl.h"
 
 #include "board.cpp"
+#include <cmath>
 
 using namespace std;
 
@@ -56,6 +57,9 @@ void Tank::integrate(long t) {
         x = x + vx * time_remaining;
         y = y + vy * time_remaining;
         state = QUIET;
+        x = round(x); 
+        y = round(y);
+        if (id == 'P') cout << "(" << x <<"," << y << ")" << endl;
     }
 }
 
