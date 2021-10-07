@@ -36,12 +36,8 @@ void Maze::maze(vector<vector<char>> &map) {
     _maze(map, 0, 0);
     refineMaze(map, 30);
 }
-<<<<<<< HEAD
+
 void Maze::showMaze(vector<vector<char>> &map) {
-=======
-void Maze::showMaze(vector<vector<char>> &map)
-{
->>>>>>> pack2Stage2
     for (int i = 0; i < map.size(); i++) {              //heigth
         for (int j = map[0].size() - 1; j >= 0; j--) {  //width
             cout << map[i][j];

@@ -15,8 +15,5 @@
 
 #define MOVE 1
 #define QUIET 2
-<<<<<<< HEAD
 
-=======
 #pragma once
->>>>>>> pack2Stage2
