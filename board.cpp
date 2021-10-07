@@ -61,21 +61,13 @@ void Board::respawnPointGenerator() {
 }
 
 bool Board::isValid(int x, int y, char id) {
-    if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') &&!isOccupied(x, y)) {
-        if (map[x][y] == 'P' && id == 'E')
-        { // Winner is Enemy
+    if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') ) {
+        if (id == 'P') cout << "MAP ..> " << map[x][y] << " Coord: " << x << " " << y << endl;
+        if ((map[x][y] == 'P' && id == 'E') || (map[x][y] == 'E' && id == 'P')) {  // Winner is Enemy
             cout << "Winner is " << id << endl;
-            return true;
+            
         }
-        else if (map[x][y] == 'E' && id == 'P')
-        { // Winner is Player
-            cout << "Winner is " << id << endl;
-            return true;
-        }
-        else
-        {
-            return true;
-        }
+        return true;
     } else {
         return false;
     }

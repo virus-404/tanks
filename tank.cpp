@@ -8,10 +8,10 @@ class Tank {
    private:
     float x, y;    //-- Current position
     float vx, vy;  //-- Velocity vector
-    int state;
     long time_remaining;
     float *color;
     char id;
+    int state;
 
    public:
     Tank(float*, char);

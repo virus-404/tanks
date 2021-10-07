@@ -80,24 +80,30 @@ void display() {
 }
 
 void keyboard(unsigned char c, int x, int y) {
+    if (player->get_state() == MOVE) return; 
+    cout << "Key pressed: " << c << endl;
     // UP
     if (c == 'w') {
+        cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
     }
     // RIGHT
     else if (c == 'd') {
+        cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
     // LEFT
     } else if (c == 'a') {
+        cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
     // DOWN
     } else if (c == 's') {
+        cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
     }
-    
+    glFlush();
     moveEnemy();
-    c = ' ';
     glutPostRedisplay();
+    c = ' ';
 }
 
 void moveEnemy() {
@@ -106,15 +112,6 @@ void moveEnemy() {
     direction[1] = 1; // d
     direction[2] = 2; // a
     direction[3] = 3; // s
-
-    for (int i = 0; i < 4; i++) {
-        int r = rand() & 3;
-        swap(direction[r], direction[i]);
-    }
-
-    float movement;
-    float nextXEnemy;
-    float nextYEnemy;
 
     switch (direction[rand()&3]) {
         case 0:
