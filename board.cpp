@@ -54,7 +54,7 @@ void Board::respawnPointGenerator() {
     while (!connected) {
         if (map[i + 1][j] == ' ' || map[i][j - 1] == ' ')
             connected = true;
-        else if (map[i][j] == 'W')
+        else if (map[i][j] == 'X')
             map[i][j] = ' ';
         i++;
     }
