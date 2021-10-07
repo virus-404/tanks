@@ -96,7 +96,7 @@ void keyboard(unsigned char c, int x, int y) {
     }
     
     moveEnemy();
-
+    c = ' ';
     glutPostRedisplay();
 }
 

@@ -1,7 +1,6 @@
 #include "./opengl.h"
 
 #include "board.cpp"
-#pragma once
 
 using namespace std;
 

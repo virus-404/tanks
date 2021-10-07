@@ -15,3 +15,4 @@
 
 #define MOVE 1
 #define QUIET 2
+#pragma once
