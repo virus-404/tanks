@@ -27,6 +27,8 @@ class Maze
 
 void Maze::maze(vector<vector<char>> &map)
 {
+    _maze(map, 0, 0);
+    refineMaze(map, 20);
     //U unvisited, ' ' visited
     for (int i = 0; i < map.size(); ++i)
     {
@@ -35,8 +37,6 @@ void Maze::maze(vector<vector<char>> &map)
             map[i][j] = 'X';
         }
     }
-    _maze(map, 0, 0);
-    refineMaze(map, 20);
 }
 void Maze::showMaze(vector<vector<char>> &map)
 {
