@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 
-#include "./maze.cpp"
+#include "maze.cpp"
+#pragma once
 
 using namespace std;
 
@@ -12,15 +13,14 @@ class Board {
    public:
     Map map;
     Board(int, int);
-    int* getRespawnPlayer();
-    int* getRespawnEnemy();
-    bool movementIsValid(int*,char*);
-    char didIWin(char*);
+    bool isValid(int, int, char);
+    void setPositionBoard(int x, int y, char id);
 
    private:
+    int posP[2] = {};
+    int posE[2] = {};
     void respawnPointGenerator();
-    int playerPosition[2];
-    int enemyPosition[2];
+    bool isOccupied(int, int, char);
 };
 
 Board::Board(int height, int width) {
@@ -44,7 +44,7 @@ void Board::respawnPointGenerator() {
     while (!connected) {
         if (map[i - 1][j] == ' ' || map[i][j + 1] == ' ')
             connected = true;
-        else if (map[i][j] == 'W')
+        else if (map[i][j] == 'X')
             map[i][j] = ' ';
         i--;
     }
@@ -52,20 +52,42 @@ void Board::respawnPointGenerator() {
     connected = false;
     i = 1;
     j = map.size() - 2;
-    map[1][map.size() - 2] = 'P';
+    map[i][j] = 'P';
 
     while (!connected) {
         if (map[i + 1][j] == ' ' || map[i][j - 1] == ' ')
             connected = true;
-        else if (map[i][j] == 'W')
+        else if (map[i][j] == 'X')
             map[i][j] = ' ';
         i++;
     }
 }
 
-int* Board::getRespawnPlayer() {
-    return new int[2]{1, (int)map.size() - 2};
+bool Board::isValid(int x, int y, char id) {
+    if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') && !isOccupied(x,y,id)) {
+        if (id == 'P') cout << "MAP ..> " << map[x][y] << " Coord: " << x << " " << y << endl;
+        if ((map[x][y] == 'P' && id == 'E') || (map[x][y] == 'E' && id == 'P')) {  // Winner is Enemy
+            cout << "Winner is " << id << endl;
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
-int* Board::getRespawnEnemy() {
-    return new int[2]{(int)map.size() - 2, 1};
+
+void Board::setPositionBoard(int x, int y, char id) {
+    if (id == 'P') {
+        posP[0] = x;
+        posP[1] = y;
+    } else if (id == 'E') {
+        posE[0] = x;
+        posE[1] = y;
+    }
+}
+
+bool Board::isOccupied(int x, int y, char id) {
+    if (id == 'P') 
+     return x == this->posE[0] && y == this->posE[1];
+    else 
+     return x == this->posP[0] && y == this->posP[1];
 }

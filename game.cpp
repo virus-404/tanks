@@ -1,13 +1,12 @@
 #include <iostream>
 
+#include "./opengl.h"
 #include "board.cpp"
-#include "opengl.h"
 #include "tank.cpp"
 
 using namespace std;
 
-int keyflag = 0;  // It is needed a cell width as a translation of a tank.
-int cell_width;
+int keyflag = 0;
 long last_t = 0;
 
 Board *board;
@@ -17,14 +16,20 @@ Tank *enemy;
 void display();
 void keyboard(unsigned char, int, int);
 void idle();
-void drawTank(Tank *, int, int);
+bool checkWall(int, int);
+bool checkPlayerGoal(int, int);
+bool checkEnemyGoal(int, int);
+void moveEnemy();
+void swap(int &a, int &b);
 
 int main(int argc, char *argv[]) {
     board = new Board(COLUMNS, ROWS);
-    player = new Tank(new float[3]{0.20, 0.80, 0.20});
-    enemy = new Tank(new float[3]{0.83, 0.00, 0.00});
+    player = new Tank(new float[3]{0.20, 0.80, 0.20}, 'P');
+    enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
     player->set_position(1, ROWS - 2);
+    board->setPositionBoard(1, ROWS - 2, 'P');
     enemy->set_position(COLUMNS - 2, 1);
+    board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -77,24 +82,63 @@ void display() {
 }
 
 void keyboard(unsigned char c, int x, int y) {
+    if (player->get_state() == MOVE) return;
+    cout << "Key pressed: " << c << endl;
+    // UP
     if (c == 'w') {
-        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() + cell_width, 160);
-    } else if (c == 'd') {
-        player->init_movement(player->getX_CurrentPosition() + cell_width, player->getY_CurrentPosition(), 160);
-    } else if (c == 'a') {
-        player->init_movement(player->getX_CurrentPosition() - cell_width, player->getY_CurrentPosition(), 160);
-    } else if (c == 's') {
-        player->init_movement(player->getX_CurrentPosition(), player->getY_CurrentPosition() - cell_width, 160);
+        cout << "Key pressed: " << c << endl;
+        player->keyPressed(c, board);
     }
-
+    // RIGHT
+    else if (c == 'd') {
+        cout << "Key pressed: " << c << endl;
+        player->keyPressed(c, board);
+        // LEFT
+    } else if (c == 'a') {
+        cout << "Key pressed: " << c << endl;
+        player->keyPressed(c, board);
+        // DOWN
+    } else if (c == 's') {
+        cout << "Key pressed: " << c << endl;
+        player->keyPressed(c, board);
+    }
     glutPostRedisplay();
+}
+
+void moveEnemy() {
+    if (enemy->get_state() == MOVE) return;
+    int direction[4];
+    direction[0] = 0;  // w
+    direction[1] = 1;  // d
+    direction[2] = 2;  // a
+    direction[3] = 3;  // s
+
+    switch (direction[rand() & 3]) {
+        case 0:
+            enemy->keyPressed('w', board);
+            break;
+        case 1:
+            enemy->keyPressed('d', board);
+            break;
+        case 2:
+            enemy->keyPressed('a', board);
+        case 3:
+            enemy->keyPressed('s', board);
+            break;
+    }
+}
+
+void swap(int &a, int &b) {
+    int c = a;
+    a = b;
+    b = c;
 }
 
 void idle() {
     long t;
 
     t = glutGet(GLUT_ELAPSED_TIME);
-
+    moveEnemy();
     if (last_t == 0)
         last_t = t;
     else {
