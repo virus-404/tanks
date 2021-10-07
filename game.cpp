@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "board.cpp"
 #include "./opengl.h"
+#include "board.cpp"
 #include "tank.cpp"
 
 using namespace std;
@@ -27,7 +27,9 @@ int main(int argc, char *argv[]) {
     player = new Tank(new float[3]{0.20, 0.80, 0.20}, 'P');
     enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
     player->set_position(1, ROWS - 2);
+    board->setPositionBoard(1, ROWS - 2, 'P');
     enemy->set_position(COLUMNS - 2, 1);
+    board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -80,7 +82,7 @@ void display() {
 }
 
 void keyboard(unsigned char c, int x, int y) {
-    if (player->get_state() == MOVE) return; 
+    if (player->get_state() == MOVE) return;
     cout << "Key pressed: " << c << endl;
     // UP
     if (c == 'w') {
@@ -91,29 +93,27 @@ void keyboard(unsigned char c, int x, int y) {
     else if (c == 'd') {
         cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
-    // LEFT
+        // LEFT
     } else if (c == 'a') {
         cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
-    // DOWN
+        // DOWN
     } else if (c == 's') {
         cout << "Key pressed: " << c << endl;
         player->keyPressed(c, board);
     }
-    glFlush();
-    moveEnemy();
     glutPostRedisplay();
-    c = ' ';
 }
 
 void moveEnemy() {
+    if (enemy->get_state() == MOVE) return;
     int direction[4];
-    direction[0] = 0; // w
-    direction[1] = 1; // d
-    direction[2] = 2; // a
-    direction[3] = 3; // s
+    direction[0] = 0;  // w
+    direction[1] = 1;  // d
+    direction[2] = 2;  // a
+    direction[3] = 3;  // s
 
-    switch (direction[rand()&3]) {
+    switch (direction[rand() & 3]) {
         case 0:
             enemy->keyPressed('w', board);
             break;
@@ -138,7 +138,7 @@ void idle() {
     long t;
 
     t = glutGet(GLUT_ELAPSED_TIME);
-
+    moveEnemy();
     if (last_t == 0)
         last_t = t;
     else {

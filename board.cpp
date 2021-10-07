@@ -14,10 +14,13 @@ class Board {
     Map map;
     Board(int, int);
     bool isValid(int, int, char);
+    void setPositionBoard(int x, int y, char id);
 
    private:
+    int posP[2] = {};
+    int posE[2] = {};
     void respawnPointGenerator();
-    bool isOccupied(int, int);
+    bool isOccupied(int, int, char);
 };
 
 Board::Board(int height, int width) {
@@ -43,11 +46,11 @@ void Board::respawnPointGenerator() {
             connected = true;
         else if (map[i][j] == 'X')
             map[i][j] = ' ';
-            i--;
+        i--;
     }
 
-    connected = false; 
-    i = 1; 
+    connected = false;
+    i = 1;
     j = map.size() - 2;
     map[i][j] = 'P';
 
@@ -61,11 +64,10 @@ void Board::respawnPointGenerator() {
 }
 
 bool Board::isValid(int x, int y, char id) {
-    if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') ) {
+    if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') && !isOccupied(x,y,id)) {
         if (id == 'P') cout << "MAP ..> " << map[x][y] << " Coord: " << x << " " << y << endl;
         if ((map[x][y] == 'P' && id == 'E') || (map[x][y] == 'E' && id == 'P')) {  // Winner is Enemy
             cout << "Winner is " << id << endl;
-            
         }
         return true;
     } else {
@@ -73,6 +75,19 @@ bool Board::isValid(int x, int y, char id) {
     }
 }
 
-bool Board::isOccupied(int x, int y) {
-    return false;
+void Board::setPositionBoard(int x, int y, char id) {
+    if (id == 'P') {
+        posP[0] = x;
+        posP[1] = y;
+    } else if (id == 'E') {
+        posE[0] = x;
+        posE[1] = y;
+    }
+}
+
+bool Board::isOccupied(int x, int y, char id) {
+    if (id == 'P') 
+     return x == this->posE[0] && y == this->posE[1];
+    else 
+     return x == this->posP[0] && y == this->posP[1];
 }

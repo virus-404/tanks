@@ -78,32 +78,18 @@ void Tank::draw() {
 }
 
 void Tank::keyPressed(unsigned char key, Board* board) {
-    if (key == 'w')
+    int delta_x = 0; 
+    int delta_y = 0; 
+
+    if (key == 'w') delta_y = 1; 
+    else if (key == 'd') delta_x = 1; 
+    else if (key == 'a') delta_x = -1;
+    else if (key == 's') delta_y = -1;
+    
+    if (board->isValid(this->x + delta_x, this->y + delta_y, this->id))
     {
-        if (board->isValid(this->x, this->y + 1, this->id))
-        {
-            this->init_movement(this->x, this->y + 1, 1000);
-        }
+        board->setPositionBoard(this->x + delta_x, this->y + delta_y, this->id);
+        this->init_movement(this->x + delta_x, this->y + delta_y, 1000);
     }
-    else if (key == 'd')
-    {
-        if (board->isValid(this->x + 1, this->y, this->id))
-        {
-            this->init_movement(this->x + 1, this->y, 1000);
-        }
-    }
-    else if (key == 'a')
-    {
-        if (board->isValid(this->x - 1, this->y, this->id))
-        {
-            this->init_movement(this->x - 1, this->y, 1000);
-        }
-    }
-    else if (key == 's')
-    {
-        if (board->isValid(this->x, this->y - 1, this->id))
-        {
-            this->init_movement(this->x, this->y - 1, 1000);
-        }
-    }
+    
 }
