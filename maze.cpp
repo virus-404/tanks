@@ -30,7 +30,7 @@ void Maze::maze(vector<vector<char>> &map) {
     //U unvisited, ' ' visited
     for (int i = 0; i < map.size(); ++i) {
         for (int j = 0; j < map[0].size(); ++j) {
-            map[i][j] = 'X';
+            map[i][j] = 'W';
         }
     }
     _maze(map, 0, 0);
@@ -82,7 +82,7 @@ void Maze::refineMaze(vector<vector<char>> &map, float percent) {
     if (percent > 100 || percent < 15) return;
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
-            if (map[i][j] == 'X') wallsList.push_back({i, j});
+            if (map[i][j] == 'W') wallsList.push_back({i, j});
 
     int m;  //temporal
     percent = (100 - percent) / 100;
@@ -94,7 +94,7 @@ void Maze::refineMaze(vector<vector<char>> &map, float percent) {
         wallsList.erase(wallsList.begin() + m);
     }
 
-    std::vector<char> tmp(width + 1, 'X');
+    std::vector<char> tmp(width + 1, 'W');
 
     // vertical laterals
     map.emplace(map.begin(), tmp);
@@ -103,8 +103,8 @@ void Maze::refineMaze(vector<vector<char>> &map, float percent) {
 
     // horizontal laterals
     for (int i = 1; i < height; i++) {
-        map[i].emplace(map[i].begin(), 'X');
-        map[i].emplace(map[i].begin() + width, 'X');  //width was updated so it is within the bounds.
+        map[i].emplace(map[i].begin(), 'W');
+        map[i].emplace(map[i].begin() + width, 'W');  //width was updated so it is within the bounds.
     }
 }
 int Maze::countVisitedNeighbor(vector<vector<char>> &map, int i, int j) {

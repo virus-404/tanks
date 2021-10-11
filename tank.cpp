@@ -65,15 +65,15 @@ void Tank::integrate(long t) {
 
 void Tank::draw() {
     float reductionFactor = 0.35;
-    float w_blank = reductionFactor * WIDTH / COLUMNS;
-    float h_blank = reductionFactor * HEIGHT / ROWS;
+    float w_blank = reductionFactor * DISTANCE_UNIT;
+    float h_blank = reductionFactor * DISTANCE_UNIT;
     glColor3f(this->color[0], this->color[1], this->color[2]);
     
     glBegin(GL_QUADS);
-    glVertex2f(x * WIDTH / COLUMNS + w_blank, y * HEIGHT / ROWS + h_blank);
-    glVertex2f((x + 1) * WIDTH / COLUMNS - w_blank, y * HEIGHT / ROWS + h_blank);
-    glVertex2f((x + 1) * WIDTH / COLUMNS - w_blank, (y + 1) * HEIGHT / ROWS - h_blank);
-    glVertex2f(x * WIDTH / COLUMNS + w_blank, (y + 1) * HEIGHT / ROWS - h_blank);
+    glVertex2f(x * DISTANCE_UNIT + w_blank, y * DISTANCE_UNIT + h_blank);
+    glVertex2f((x + 1) * DISTANCE_UNIT - w_blank, y * DISTANCE_UNIT + h_blank);
+    glVertex2f((x + 1) * DISTANCE_UNIT - w_blank, (y + 1) * DISTANCE_UNIT - h_blank);
+    glVertex2f(x * DISTANCE_UNIT + w_blank, (y + 1) * DISTANCE_UNIT - h_blank);
     glEnd();
 }
 
