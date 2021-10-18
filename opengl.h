@@ -1,5 +1,6 @@
 #ifdef __linux__
     #include <GL/glut.h>
+    #include "jpeglib.h"
 #elif __APPLE__
     #define GL_SILENCE_DEPRECATION
     #include <OpenGL/glu.h>

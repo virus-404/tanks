@@ -43,30 +43,20 @@ int main(int argc, char *argv[]) {
     glutInitWindowSize(WIDTH, HEIGHT);
     glutCreateWindow("Tanks board");
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutIdleFunc(idle);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    board->loadTexture("./textures/pared.jpg", 64);
 
     glutMainLoop();
     return 0;
 }
 
 void display() {
-    int translationX = -(int)round(WIDTH / 2);   // WIDTH <--> COLUMNS
-    int translationY = -(int)round(HEIGHT / 2);  //HEIGHT <--> ROWS
-
-    int vertex[8][3] = {
-        {0, 1, 0},  //a
-        {0, 1, -1},  //b
-        {0, 0, -1},  //c
-        {0, 0, 0},  //d
-        {1, 0, 0},  //e
-        {1, 1, 0},  //f
-        {1, 0, -1},  //g
-        {1, 1, -1}   //h
-    };
-
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -83,72 +73,7 @@ void display() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
 
-    for (int i = 0; i < board->map.size(); i++) {  //
-        for (int j = 0; j < board->map[i].size(); j++) {  //
-            if (board->map[i][j] == ' ') continue;
-            switch (board->map[i][j]) {
-                case 'W':
-                    glColor3f(0.8, 0.8, 0.8);
-                    break;
-                case 'E':
-                    glColor3f(0.66, 0, 0);
-                    break;
-                case 'P':
-                    glColor3f(0.294, 0.325, 0.125);
-                    break;
-            }
-            // lower quadrilater
-            glBegin(GL_QUADS);
-            glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
-            glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
-            glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
-            glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
-            glEnd();
-           
-
-            if (board->map[i][j] == 'W') {
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
-                glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
-                glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
-                glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
-                glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
-                glEnd();
-
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
-                glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
-                glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
-                glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
-                glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
-                glEnd();
-
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
-                glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
-                glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
-                glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
-                glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
-                glEnd();
-
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
-                glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
-                glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
-                glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
-                glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
-                glEnd();
-
-                glColor3f(0.8, 0.8, 0.8);
-                glBegin(GL_QUADS);
-                glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
-                glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
-                glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
-                glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
-                glEnd();
-            }
-        }
-    }
+    board->draw();
     //player->draw();
     //enemy->draw();
 

@@ -1,7 +1,7 @@
 compile:
-	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm
+	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm -ljpeg
 all: 
-	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm
+	g++ game.cpp -o game.o -lglut -lGLU -lGL -lm -ljpeg
 	./game.o
 clean:
 	rm game.o
