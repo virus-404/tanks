@@ -50,8 +50,6 @@ int main(int argc, char *argv[]) {
     glutIdleFunc(idle);
 
     glBindTexture(GL_TEXTURE_2D, 0);
-    board->loadTexture("./textures/pared.jpg", 64);
-
     glutMainLoop();
     return 0;
 }
