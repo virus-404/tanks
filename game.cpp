@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "./opengl.h"
 #include "board.cpp"
 #include "tank.cpp"

@@ -1,7 +1,5 @@
 #include "./opengl.h"
-
 #include "board.cpp"
-#include <cmath>
 
 using namespace std;
 
