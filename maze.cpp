@@ -38,7 +38,7 @@ void Maze::maze(vector<vector<char>> &map) {
 }
 
 void Maze::showMaze(vector<vector<char>> &map) {
-    for (int i = 0; i < map.size(); i++) {              //heigth
+    for (int i = 0; i < map.size(); i++) {              //height
         for (int j = map[0].size() - 1; j >= 0; j--) {  //width
             cout << map[i][j];
         }

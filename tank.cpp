@@ -13,13 +13,18 @@ class Tank {
     int state;
 
    public:
-    Tank(float*, char);
+    Tank(float *, char);
     int get_state();
     void set_position(int, int);
     void init_movement(int, int, int);
     void integrate(long);
     void draw();
-    void keyPressed(unsigned char, Board*);
+    void drawMainGun();
+    void drawTurret();
+    void drawWheels();
+    void drawHull();
+
+    void keyPressed(unsigned char, Board *);
 };
 
 Tank::Tank(float *color, char id) {
@@ -55,39 +60,37 @@ void Tank::integrate(long t) {
         x = x + vx * time_remaining;
         y = y + vy * time_remaining;
         state = QUIET;
-        x = round(x); 
+        x = round(x);
         y = round(y);
-        if (id == 'P') cout << "(" << x <<"," << y << ")" << endl;
+        if (id == 'P') cout << "(" << x << "," << y << ")" << endl;
+    }
+}
+
+void Tank::keyPressed(unsigned char key, Board *board) {
+    int delta_x = 0;
+    int delta_y = 0;
+
+    if (key == 'w')
+        delta_y = 1;
+    else if (key == 'd')
+        delta_x = 1;
+    else if (key == 'a')
+        delta_x = -1;
+    else if (key == 's')
+        delta_y = -1;
+
+    if (board->isValid(this->x + delta_x, this->y + delta_y, this->id)) {
+        board->setPositionBoard(this->x + delta_x, this->y + delta_y, this->id);
+        this->init_movement(this->x + delta_x, this->y + delta_y, 1000);
     }
 }
 
 void Tank::draw() {
-    float reductionFactor = 0.35;
-    float w_blank = reductionFactor * DISTANCE_UNIT;
-    float h_blank = reductionFactor * DISTANCE_UNIT;
-    glColor3f(this->color[0], this->color[1], this->color[2]);
-    
-    glBegin(GL_QUADS);
-    glVertex2f(x * DISTANCE_UNIT + w_blank, y * DISTANCE_UNIT + h_blank);
-    glVertex2f((x + 1) * DISTANCE_UNIT - w_blank, y * DISTANCE_UNIT + h_blank);
-    glVertex2f((x + 1) * DISTANCE_UNIT - w_blank, (y + 1) * DISTANCE_UNIT - h_blank);
-    glVertex2f(x * DISTANCE_UNIT + w_blank, (y + 1) * DISTANCE_UNIT - h_blank);
-    glEnd();
+    drawMainGun();
+    drawTurret();
+    drawWheels();
+    drawHull();
 }
 
-void Tank::keyPressed(unsigned char key, Board* board) {
-    int delta_x = 0; 
-    int delta_y = 0; 
-
-    if (key == 'w') delta_y = 1; 
-    else if (key == 'd') delta_x = 1; 
-    else if (key == 'a') delta_x = -1;
-    else if (key == 's') delta_y = -1;
-    
-    if (board->isValid(this->x + delta_x, this->y + delta_y, this->id))
-    {
-        board->setPositionBoard(this->x + delta_x, this->y + delta_y, this->id);
-        this->init_movement(this->x + delta_x, this->y + delta_y, 1000);
-    }
-    
+void Tank::drawHull() {
 }
