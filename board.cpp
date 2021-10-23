@@ -105,11 +105,11 @@ void Board::draw() {
 
     int vertex[8][3] = {
         {0, 1, 1},   // a
-        {0, 1, 0},  // b
-        {0, 0, 0},  // c
+        {0, 1, 0},   // b
+        {0, 0, 0},   // c
         {0, 0, 1},   // d
-        {1, 0, 1},   // e
-        {1, 1, 1},   // f
+        {1, 1, 1},   // e
+        {1, 0, 1},   // f
         {1, 0, 0},  // g
         {1, 1, 0}   // h
     };
@@ -155,9 +155,9 @@ void Board::draw() {
 
                 glBegin(GL_QUADS);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
-                glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
+                glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
                 glEnd();
 
                 glBegin(GL_QUADS);
