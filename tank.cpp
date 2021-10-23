@@ -22,7 +22,7 @@ class Tank {
     void integrate(long);
     void draw();
     void drawBox(int[][3]);
-    void drawCylinder(int[][3]);
+    void drawCylinder();
     void keyPressed(unsigned char, Board *);
 };
 
@@ -107,11 +107,13 @@ void Tank::draw() {
         {8, 13, 8}     // h
     };
 
+
     drawBox(hull);
     float *tmp = this->color;
     this->color = new float[3]{0, 0, 0};
     drawBox(turret);
-    this->color = tmp; 
+    this->color = tmp;
+    drawCylinder();
 }
 
 void Tank::drawBox(int vertexes[8][3]) {
@@ -166,5 +168,34 @@ void Tank::drawBox(int vertexes[8][3]) {
     glEnable(GL_TEXTURE_2D);
 }
 
-void Tank::drawCylinder(int vertex[8][3]) {
+void Tank::drawCylinder() {
+    glDisable(GL_TEXTURE_2D);
+    static GLUquadric *gluQuadric = NULL; //"Context" to draw circle based polygons
+    if (gluQuadric == NULL)
+        gluQuadric = gluNewQuadric();
+
+    /*
+        1) glPushMatrix();  //save the current matrix
+        2) glTranslatef(0, 0, 90);  //move to the desired location
+        3) draw-whatever();
+        4) glPopMatrix();  //restore the old matrix
+    */
+
+    glColor3f(1, 0, 0);
+    glPushMatrix();                     
+    glTranslatef(0, 0, 50);             
+    gluDisk(gluQuadric, 0, 40, 10, 1);  //inner = 0 --> No hollow
+    glPopMatrix();                      
+
+    glPushMatrix();
+    glTranslatef(0, 0, 50);
+    gluCylinder(gluQuadric, 40, 40, 20, 200, 200);
+    glPopMatrix();
+
+    glPushMatrix();    
+    glTranslatef(0, 0, 50 + 20);
+    gluDisk(gluQuadric, 0, 40, 10, 1);
+    glPopMatrix();
+
+    glEnable(GL_TEXTURE_2D);
 }
