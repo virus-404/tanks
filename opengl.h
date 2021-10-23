@@ -15,7 +15,7 @@
 #define ROWS 20
 #define WIDTH 300
 #define HEIGHT 300
-#define HEIGHT_WALL 30
+#define HEIGHT_WALL 20
 
 #define DISTANCE_UNIT 15          // 300/20 = 15
 #define DISTANCE_SUBUNIT 0.88235  // 15/17 = 0.88235...
