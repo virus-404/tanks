@@ -72,7 +72,6 @@ void display() {
     board->draw();
     player->draw();
     enemy->draw();
-
     glutSwapBuffers();
 }
 

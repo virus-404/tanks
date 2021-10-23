@@ -38,7 +38,6 @@ Board::Board(int height, int width) {
     maze.maze(map);
     respawnPointGenerator();
     maze.showMaze(map);
-
     wallTex = new Texture(); wallTex -> readJPEG("./textures/wall.jpg");
     corrTex = new Texture(); corrTex -> readJPEG("./textures/bush.jpg");
 }
@@ -59,7 +58,7 @@ void Board::respawnPointGenerator() {
 
     connected = false;
     i = 1;
-    j = map.size() - 2;
+    j = map.size() -2;
     map[i][j] = 'P';
 
     while (!connected) {
@@ -115,8 +114,8 @@ void Board::draw() {
         {1, 1, 0}   // h
     };
 
-    for (int i = 0; i < map.size(); i++) {         //
-        for (int j = 0; j < map[i].size(); j++) {  //
+    for (int i = 0; i < map.size(); i++) {         
+         for (int j = 0; j < map[i].size(); j++) {  
             switch (map[i][j]) {
                 case 'W':
                     loadTexture(*(wallTex), 64);

@@ -39,7 +39,7 @@ void Maze::maze(vector<vector<char>> &map) {
 
 void Maze::showMaze(vector<vector<char>> &map) {
     for (int i = 0; i < map.size(); i++) {              //height
-        for (int j = map[0].size() - 1; j >= 0; j--) {  //width
+        for (int j = map[i].size() - 1; j >= 0; j--) {  //width
             cout << map[i][j];
         }
         cout << endl;
@@ -58,7 +58,7 @@ void Maze::_maze(vector<vector<char>> &map, int i, int j) {
     if (map[i][j] == ' ')
         return;
 
-    //some neightbors are visited in addition to the coming direction, return
+    //some neighbors are visited in addition to the coming direction, return
     //this is to avoid circles in maze
     if (countVisitedNeighbor(map, i, j) > 1)
         return;
@@ -75,37 +75,34 @@ void Maze::_maze(vector<vector<char>> &map, int i, int j) {
     }
 }
 void Maze::refineMaze(vector<vector<char>> &map, float percent) {
-    int height = map.size();    //represented in x axis
-    int width = map[0].size();  //represented in y axis
     vector<vector<int>> wallsList;
 
     if (percent > 100 || percent < 15) return;
-    for (int i = 0; i < height; i++)
-        for (int j = 0; j < width; j++)
+    for (int i = 0; i < map.size(); i++)
+        for (int j = 0; j < map[i].size(); j++)
             if (map[i][j] == 'W') wallsList.push_back({i, j});
 
     int m;  //temporal
     percent = (100 - percent) / 100;
-    int orginalSize = wallsList.size();
+    int originalSize = wallsList.size();
 
-    while ((float)wallsList.size() / orginalSize > percent) {
+    while ((float)wallsList.size() / originalSize > percent) {
         m = randInt(0, wallsList.size() - 1);
         map[wallsList[m][0]][wallsList[m][1]] = ' ';
         wallsList.erase(wallsList.begin() + m);
     }
 
-    std::vector<char> tmp(width + 1, 'W');
+    // horizontal laterals
+    for (int i = 0; i < map.size() ; i++) {
+        map[i].emplace(map[i].begin(), 'W');
+        map[i].push_back('W');  //width was updated so it is within the bounds.
+    }
 
     // vertical laterals
+    std::vector<char> tmp(map[1].size(), 'W');
     map.emplace(map.begin(), tmp);
-    height = map.size();
     map.emplace_back(tmp);
 
-    // horizontal laterals
-    for (int i = 1; i < height; i++) {
-        map[i].emplace(map[i].begin(), 'W');
-        map[i].emplace(map[i].begin() + width, 'W');  //width was updated so it is within the bounds.
-    }
 }
 int Maze::countVisitedNeighbor(vector<vector<char>> &map, int i, int j) {
     int direct[][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
