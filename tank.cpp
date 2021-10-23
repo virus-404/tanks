@@ -11,6 +11,8 @@ class Tank {
     float *color;
     char id;
     int state;
+    int translationX = -(int)round(WIDTH / 2);   // WIDTH <--> COLUMNS
+    int translationY = -(int)round(HEIGHT / 2);  // HEIGHT <--> ROWS
 
    public:
     Tank(float *, char);
@@ -19,11 +21,8 @@ class Tank {
     void init_movement(int, int, int);
     void integrate(long);
     void draw();
-    void drawMainGun();
-    void drawTurret();
-    void drawWheels();
-    void drawHull();
-
+    void drawBox(int[][3]);
+    void drawCylinder(int[][3]);
     void keyPressed(unsigned char, Board *);
 };
 
@@ -86,78 +85,82 @@ void Tank::keyPressed(unsigned char key, Board *board) {
 }
 
 void Tank::draw() {
-    drawMainGun();
-    drawTurret();
-    drawWheels();
-    drawHull();
+    int hull[8][3] = {
+        {2, 14, 2},   // a
+        {2, 14, 8},   // b
+        {2, 3, 8},    // c
+        {2, 3, 2},    // d
+        {11, 14, 2},  // e
+        {11, 3, 2},   // f
+        {11, 3, 8},   // g
+        {11, 14, 8}   // h
+    };
+    int turret[8][3] = {
+        {4, 13, 8},   // a
+        {4, 13, 12},   // b
+        {4, 4, 12},    // c
+        {4, 4, 8},    // d
+        {8, 13, 8},  // e
+        {8, 4, 8},   // f
+        {8, 4, 12},   // g
+        {8, 13, 8}   // h
+    };
+    drawBox(hull);
+    //this->color = new float[3]{0,0,0};
+    drawBox(turret);
 }
 
-void Tank::drawHull() {
-    int translationX = -(int)round(WIDTH / 2);   // WIDTH <--> COLUMNS
-    int translationY = -(int)round(HEIGHT / 2);  // HEIGHT <--> ROWS
-
-    int vertex[8][3] = {
-        {2, 11, 2},  // a
-        {2, 11, 7},  // b
-        {2, 6, 7},  // c
-        {2, 6, 2},  // d
-        {11, 11, 2}, // e
-        {11, 6, 2}, // f
-        {11, 6, 7}, // g
-        {11, 11, 7}  // h
-    };
-
-    
-
+void Tank::drawBox(int vertexes[8][3]) {
+    glDisable(GL_TEXTURE_2D);
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[1][1]) + y * DISTANCE_UNIT + translationY, vertex[1][2]);
-    glVertex3i((vertex[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[2][1]) + y * DISTANCE_UNIT + translationY, vertex[2][2]);
-    glVertex3i((vertex[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[6][1]) + y * DISTANCE_UNIT + translationY, vertex[6][2]);
-    glVertex3i((vertex[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[7][1]) + y * DISTANCE_UNIT + translationY, vertex[7][2]);
+    glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
+    glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
+    glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
+    glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
     glEnd();
 
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[3][1]) + y * DISTANCE_UNIT + translationY, vertex[3][2]);
-    glVertex3i((vertex[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[5][1]) + y * DISTANCE_UNIT + translationY, vertex[5][2]);
-    glVertex3i((vertex[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[4][1]) + y * DISTANCE_UNIT + translationY, vertex[4][2]);
-    glVertex3i((vertex[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[0][1]) + y * DISTANCE_UNIT + translationY, vertex[0][2]);
+    glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
+    glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
+    glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
+    glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
     glEnd();
 
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[3][1]) + y * DISTANCE_UNIT + translationY, vertex[3][2]);
-    glVertex3i((vertex[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[0][1]) + y * DISTANCE_UNIT + translationY, vertex[0][2]);
-    glVertex3i((vertex[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[1][1]) + y * DISTANCE_UNIT + translationY, vertex[1][2]);
-    glVertex3i((vertex[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[2][1]) + y * DISTANCE_UNIT + translationY, vertex[2][2]);
+    glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
+    glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
+    glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
+    glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
     glEnd();
    
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[3][1]) + y * DISTANCE_UNIT + translationY, vertex[3][2]);
-    glVertex3i((vertex[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[2][1]) + y * DISTANCE_UNIT + translationY, vertex[2][2]);
-    glVertex3i((vertex[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[6][1]) + y * DISTANCE_UNIT + translationY, vertex[6][2]);
-    glVertex3i((vertex[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[5][1]) + y * DISTANCE_UNIT + translationY, vertex[5][2]);
+    glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
+    glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
+    glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
+    glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
     glEnd();
 
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[5][1]) + y * DISTANCE_UNIT + translationY, vertex[5][2]);
-    glVertex3i((vertex[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[6][1]) + y * DISTANCE_UNIT + translationY, vertex[6][2]);
-    glVertex3i((vertex[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[7][1]) + y * DISTANCE_UNIT + translationY, vertex[7][2]);
-    glVertex3i((vertex[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[4][1]) + y * DISTANCE_UNIT + translationY, vertex[4][2]);
+    glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
+    glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
+    glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
+    glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
     glEnd();
 
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertex[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[0][1]) + y * DISTANCE_UNIT + translationY, vertex[0][2]);
-    glVertex3i((vertex[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[1][1]) + y * DISTANCE_UNIT + translationY, vertex[1][2]);
-    glVertex3i((vertex[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[7][1]) + y * DISTANCE_UNIT + translationY, vertex[7][2]);
-    glVertex3i((vertex[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertex[4][1]) + y * DISTANCE_UNIT + translationY, vertex[4][2]);
+    glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
+    glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
+    glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
+    glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
     glEnd();
+    glEnable(GL_TEXTURE_2D);
 }
 
-void Tank::drawMainGun(){};
-void Tank::drawWheels(){};
-void Tank::drawTurret(){};
+void Tank::drawCylinder(int vertex[8][3]) {
+}

@@ -30,19 +30,19 @@ int main(int argc, char *argv[]) {
     anglealpha = 90;
     anglebeta = 30;
 
-    player->set_position(1, ROWS - 2);
-    board->setPositionBoard(1, ROWS - 2, 'P');
+    player->set_position(1, ROWS - 1);
+    board->setPositionBoard(1, ROWS - 1, 'P');
     enemy->set_position(COLUMNS - 2, 1);
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowPosition(50, 50);
+    glutInitWindowPosition(100, 100);
     glutInitWindowSize(WIDTH, HEIGHT);
     glutCreateWindow("Tanks board");
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-
+    
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutIdleFunc(idle);

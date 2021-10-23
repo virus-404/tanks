@@ -58,7 +58,7 @@ void Board::respawnPointGenerator() {
 
     connected = false;
     i = 1;
-    j = map.size() -2;
+    j = map.size() -1;
     map[i][j] = 'P';
 
     while (!connected) {
@@ -122,9 +122,11 @@ void Board::draw() {
                     glBindTexture(GL_TEXTURE_2D, 0);
                     break;
                 case 'E':
+                    glDisable(GL_TEXTURE_2D);
                     glColor3f(0.66, 0, 0);
                     break;
                 case 'P':
+                    glDisable(GL_TEXTURE_2D);
                     glColor3f(0.294, 0.325, 0.125);
                     break;
                 case ' ':
@@ -146,6 +148,7 @@ void Board::draw() {
                 glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
                 glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
                 glEnd();
+                glEnable(GL_TEXTURE_2D);
             }
 
             if (map[i][j] == 'W') {
