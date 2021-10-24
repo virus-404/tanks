@@ -1,4 +1,4 @@
-#include "opengl.h"
+#include "../opengl.h"
 #include "jpeglib.h"
 
 using namespace std;

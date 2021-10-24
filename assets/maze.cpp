@@ -25,7 +25,6 @@ class Maze {
     void swap(int &a, int &b);
     int randInt(int min, int max);
 };
-
 void Maze::maze(vector<vector<char>> &map) {
     //U unvisited, ' ' visited
     for (int i = 0; i < map.size(); ++i) {

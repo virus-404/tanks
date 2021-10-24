@@ -1,8 +1,8 @@
 #include <vector>
 
+#include "./assets/maze.cpp"
+#include "./assets/texture.cpp"
 #include "./opengl.h"
-#include "maze.cpp"
-#include "texture.cpp"
 #pragma once
 
 using namespace std;

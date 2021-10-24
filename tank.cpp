@@ -1,5 +1,9 @@
-#include "./opengl.h"
+#include "opengl.h"
 #include "board.cpp"
+#include "assets/cylinder.cpp"
+
+#define MAIN_GUN 0x0A
+#define WHEEL 0x00
 
 using namespace std;
 
@@ -22,7 +26,7 @@ class Tank {
     void integrate(long);
     void draw();
     void drawBox(int[][3]);
-    void drawCylinder();
+    void drawCylinder(int);
     void keyPressed(unsigned char, Board *);
 };
 
@@ -97,23 +101,25 @@ void Tank::draw() {
     };
 
     int turret[8][3] = {
-        {4, 13, 12},   // a
-        {4, 13, 8},    // b
-        {4, 4, 8},     // c
-        {4, 4, 12},    // d
-        {8, 13, 12},   // e
-        {8, 4, 12},    // f
-        {8, 4, 8},     // g
-        {8, 13, 8}     // h
+        {3, 12, 12},   // a
+        {3, 12, 8},    // b
+        {3, 5, 8},     // c
+        {3, 5, 12},    // d
+        {8, 12, 12},   // e
+        {8, 5, 12},    // f
+        {8, 5, 8},     // g
+        {8, 12, 8}     // h
     };
 
 
     drawBox(hull);
     float *tmp = this->color;
-    this->color = new float[3]{0, 0, 0};
+    this->color = new float[3]{0.847, 0.847, 0.847};
     drawBox(turret);
     this->color = tmp;
-    drawCylinder();
+    
+    for(int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
+    drawCylinder(MAIN_GUN);
 }
 
 void Tank::drawBox(int vertexes[8][3]) {
@@ -152,7 +158,7 @@ void Tank::drawBox(int vertexes[8][3]) {
 
     glColor3f(this->color[0], this->color[1], this->color[2]);
     glBegin(GL_QUADS);
-    glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
+    glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT ) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
     glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
     glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
     glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
@@ -168,34 +174,86 @@ void Tank::drawBox(int vertexes[8][3]) {
     glEnable(GL_TEXTURE_2D);
 }
 
-void Tank::drawCylinder() {
+void Tank::drawCylinder(int part) {
     glDisable(GL_TEXTURE_2D);
-    static GLUquadric *gluQuadric = NULL; //"Context" to draw circle based polygons
-    if (gluQuadric == NULL)
-        gluQuadric = gluNewQuadric();
 
-    /*
-        1) glPushMatrix();  //save the current matrix
-        2) glTranslatef(0, 0, 90);  //move to the desired location
-        3) draw-whatever();
-        4) glPopMatrix();  //restore the old matrix
-    */
-
-    glColor3f(1, 0, 0);
-    glPushMatrix();                     
-    glTranslatef(0, 0, 50);             
-    gluDisk(gluQuadric, 0, 40, 10, 1);  //inner = 0 --> No hollow
-    glPopMatrix();                      
-
-    glPushMatrix();
-    glTranslatef(0, 0, 50);
-    gluCylinder(gluQuadric, 40, 40, 20, 200, 200);
-    glPopMatrix();
-
-    glPushMatrix();    
-    glTranslatef(0, 0, 50 + 20);
-    gluDisk(gluQuadric, 0, 40, 10, 1);
-    glPopMatrix();
+    Cylinder *cyl = new Cylinder();
+        
+    switch (part) {
+        case WHEEL:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (2.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                 4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break;
+        case WHEEL + 1:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (6.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break;
+            break;
+        case WHEEL + 2:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (10.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                 4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break;
+        case WHEEL + 3:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (2.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY, //for artifact issues
+                4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break;
+        case WHEEL + 4:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (6.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break; 
+        case WHEEL + 5:
+            cyl->setLength(1);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (10.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                4.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
+            break;
+        case MAIN_GUN:
+            cyl->setLength(7);
+            cyl->setSection(2);
+            cyl->setPosition(
+                (8.0f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
+                (8.5f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
+                10.0f);
+            cyl->setAngle(90.0f);
+            cyl->setAngleNorm(0.0f, 1.0f, 0.0f);
+            break;
+    }
+    cyl->draw();
+    delete cyl;
 
     glEnable(GL_TEXTURE_2D);
 }
