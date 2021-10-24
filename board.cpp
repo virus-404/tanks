@@ -15,6 +15,8 @@ class Board {
     Board(int, int);
     bool isValid(int, int, char);
     void setPositionBoard(int x, int y, char id);
+    int getTranslationX();
+    int getTranslationY();
     void draw();
 
    private:
@@ -99,9 +101,16 @@ bool Board::isOccupied(int x, int y, char id) {
         return x == this->posP[0] && y == this->posP[1];
 }
 
+int Board::getTranslationX(){
+    return -(int)round(WIDTH * 0.75f);  // WIDTH <--> COLUMNS
+}
+
+int Board::getTranslationY(){
+    return -(int)round(HEIGHT * 0.50f);  // HEIGHT <--> ROWS
+}
 void Board::draw() {
-    int translationX = -(int)round(WIDTH / 2);   // WIDTH <--> COLUMNS
-    int translationY = -(int)round(HEIGHT / 2);  // HEIGHT <--> ROWS
+    int translationX = getTranslationX();
+    int translationY = getTranslationY();
 
     int vertex[8][3] = {
         {0, 1, 1},   // a

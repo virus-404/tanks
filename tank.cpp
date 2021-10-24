@@ -15,8 +15,8 @@ class Tank {
     float *color;
     char id, orientation;
     int state;
-    int translationX = -(int)round(WIDTH / 2);   // WIDTH <--> COLUMNS
-    int translationY = -(int)round(HEIGHT / 2);  // HEIGHT <--> ROWS
+    int translationX;
+    int translationY;
 
    public:
     Tank(float *, char);
@@ -24,6 +24,7 @@ class Tank {
     void set_position(int, int);
     void init_movement(int, int, int);
     void integrate(long);
+    void setTranslation(int,int);
     void draw();
     void drawBox(int[][3]);
     void drawCylinder(int);
@@ -127,38 +128,43 @@ void Tank::keyPressed(unsigned char key, Board *board) {
     }
 }
 
-    void Tank::draw() {
-        int hull[8][3] = {
-            {2, 14, 8},   // a
-            {2, 14, 2},   // b
-            {2, 3, 2},    // c
-            {2, 3, 8},    // d
-            {11, 14, 8},  // e
-            {11, 3, 8},   // f
-            {11, 3, 2},   // g
-            {11, 14, 2}   // h
-        };
+void Tank::setTranslation(int translationX, int translationY){
+    this->translationX = translationX;
+    this->translationY = translationY;
+}
 
-        int turret[8][3] = {
-            {3, 12, 12},  // a
-            {3, 12, 8},   // b
-            {3, 5, 8},    // c
-            {3, 5, 12},   // d
-            {8, 12, 12},  // e
-            {8, 5, 12},   // f
-            {8, 5, 8},    // g
-            {8, 12, 8}    // h
-        };
+void Tank::draw() {
+    int hull[8][3] = {
+        {2, 14, 8},   // a
+        {2, 14, 2},   // b
+        {2, 3, 2},    // c
+        {2, 3, 8},    // d
+        {11, 14, 8},  // e
+        {11, 3, 8},   // f
+        {11, 3, 2},   // g
+        {11, 14, 2}   // h
+    };
 
-        drawBox(hull);
-        float *tmp = this->color;
-        this->color = new float[3]{0.847, 0.847, 0.847};
-        drawBox(turret);
-        this->color = tmp;
+    int turret[8][3] = {
+        {3, 12, 12},  // a
+        {3, 12, 8},   // b
+        {3, 5, 8},    // c
+        {3, 5, 12},   // d
+        {8, 12, 12},  // e
+        {8, 5, 12},   // f
+        {8, 5, 8},    // g
+        {8, 12, 8}    // h
+    };
 
-        for (int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
-        drawCylinder(MAIN_GUN);
-    }
+    drawBox(hull);
+    float *tmp = this->color;
+    this->color = new float[3]{0.847, 0.847, 0.847};
+    drawBox(turret);
+    this->color = tmp;
+
+    for (int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
+    drawCylinder(MAIN_GUN);
+}
 
     void Tank::drawBox(int vertexes[8][3]) {
         glDisable(GL_TEXTURE_2D);

@@ -31,8 +31,11 @@ int main(int argc, char *argv[]) {
     anglebeta = 30;
 
     player->set_position(1, ROWS - 1);
+    player->setTranslation(board->getTranslationX(),board->getTranslationY());
     board->setPositionBoard(1, ROWS - 1, 'P');
+
     enemy->set_position(COLUMNS - 2, 1);
+    enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
@@ -63,7 +66,7 @@ void display() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-WIDTH * 0.5, WIDTH * 0.5, -HEIGHT * 0.5, HEIGHT * 0.5, 10, 1000);
+    glOrtho(-WIDTH, WIDTH, -HEIGHT, HEIGHT, 10, 1000);
     glMatrixMode(GL_MODELVIEW);
 
     glPolygonMode(GL_FRONT, GL_FILL);

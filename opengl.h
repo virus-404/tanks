@@ -11,7 +11,7 @@
 #include <cmath>
 #include <iostream>
 
-#define COLUMNS 20
+#define COLUMNS 30
 #define ROWS 20
 #define WIDTH 300
 #define HEIGHT 300
