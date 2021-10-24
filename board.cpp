@@ -58,7 +58,7 @@ void Board::respawnPointGenerator() {
 
     connected = false;
     i = 1;
-    j = map.size() -1;
+    j = map[i].size() -2;
     map[i][j] = 'P';
 
     while (!connected) {
