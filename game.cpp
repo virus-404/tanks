@@ -30,11 +30,11 @@ int main(int argc, char *argv[]) {
     anglealpha = 90;
     anglebeta = 30;
 
-    player->set_position(1, ROWS - 1);
+    player->setPosition(1, ROWS - 1);
     player->setTranslation(board->getTranslationX(),board->getTranslationY());
     board->setPositionBoard(1, ROWS - 1, 'P');
 
-    enemy->set_position(COLUMNS - 2, 1);
+    enemy->setPosition(COLUMNS - 2, 1);
     enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
@@ -79,15 +79,13 @@ void display() {
 }
 
 void keyboard(unsigned char c, int x, int y) {
-    if (player->get_state() == MOVE) return;
+    if (player->getState() == MOVE) return;
     if (c == 'w')
         player->keyPressed(c, board);  // UP
     else if (c == 'd')
         player->keyPressed(c, board);  // RIGHT
     else if (c == 'a')
         player->keyPressed(c, board);  // LEFT
-    else if (c == 's')
-        player->keyPressed(c, board);  // DOWN
     else if (c == 'i' && anglebeta <= (90 - 4))
         anglebeta = (anglebeta + 3);
     else if (c == 'k' && anglebeta >= (-90 + 4))
@@ -132,12 +130,11 @@ void positionObserver(float alpha, float beta, int radi) {
 }
 
 void moveEnemy() {
-    if (enemy->get_state() == MOVE) return;
+    if (enemy->getState() != QUIET) return;   
     int direction[4];
     direction[0] = 0;  // w
     direction[1] = 1;  // d
     direction[2] = 2;  // a
-    direction[3] = 3;  // s
 
     switch (direction[rand() & 3]) {
         case 0:
@@ -148,8 +145,6 @@ void moveEnemy() {
             break;
         case 2:
             enemy->keyPressed('a', board);
-        case 3:
-            enemy->keyPressed('s', board);
             break;
     }
 }
@@ -164,7 +159,7 @@ void idle() {
     long t;
 
     t = glutGet(GLUT_ELAPSED_TIME);
-    moveEnemy();
+    //moveEnemy();
     if (last_t == 0)
         last_t = t;
     else {
