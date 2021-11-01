@@ -3,17 +3,18 @@
 class Cylinder {
    private:
     int length, section;
-    float *posXYZ;
+    float *coordinates;
     GLfloat angle;
-    float *angleXYZ;
+    float *angelNorm;
+    int rotation;
 
    public:
     Cylinder(){};
     void setLength(int);
     void setSection(int);
-    void setPosition(float, float, float);
-    void setAngle(float);
-    void setAngleNorm(float, float, float);
+    void setCoordinates(float, float, float);
+    void setInitAngle(float, float[3]);
+    void addRotationY(int);
     void draw();
 };
 
@@ -23,14 +24,16 @@ void Cylinder::setLength(int length) {
 void Cylinder::setSection(int section) {
     this->section = section;
 }
-void Cylinder::setPosition(float x, float y, float z) {
-    this->posXYZ = new float[3]{x, y, z};
+void Cylinder::setCoordinates(float x, float y, float z) {
+    this->coordinates = new float[3]{x, y, z};
 }
-void Cylinder::setAngle(float alpha) {
+void Cylinder::setInitAngle(float alpha, float angleNorm[3]) {
     this->angle = alpha;
+    this->angelNorm = angleNorm;
 }
-void Cylinder::setAngleNorm(float x, float y, float z) {
-    this->angleXYZ = new float[3]{x, y, z};
+
+void Cylinder::addRotationY(int rotation) {
+    this->rotation = rotation;
 }
 
 void Cylinder::draw() {
@@ -47,20 +50,23 @@ void Cylinder::draw() {
     glColor3f(0, 0, 0);
 
     glPushMatrix();  //Base black
-    glTranslatef(posXYZ[0], posXYZ[1] + 0.01f, posXYZ[2]);
-    glRotatef(angle, angleXYZ[0], angleXYZ[1], angleXYZ[2]);
+    glTranslatef(coordinates[0], coordinates[1] + 0.01f, coordinates[2]);
+    glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
+    glRotatef(rotation, 0, 0, 1);
     gluDisk(gluQuadric, 0, section, 10, 1);  //inner = 0 --> No hollow
     glPopMatrix();
 
     glPushMatrix();  //Walls black
-    glTranslatef(posXYZ[0], posXYZ[1], posXYZ[2]);
-    glRotatef(angle, angleXYZ[0], angleXYZ[1], angleXYZ[2]);
+    glTranslatef(coordinates[0], coordinates[1], coordinates[2]);
+    glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
+    glRotatef(rotation, 0, 0, 1);
     gluCylinder(gluQuadric, section, section, length, 200, 200);
     glPopMatrix();
 
     glPushMatrix();  //Top black
-    glTranslatef(posXYZ[0] + length, posXYZ[1], posXYZ[2]);
-    glRotatef(angle, angleXYZ[0], angleXYZ[1], angleXYZ[2]);
+    glTranslatef(coordinates[0] + length, coordinates[1], coordinates[2]);
+    glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
+    glRotatef(rotation, 0, 0, 1);
     gluDisk(gluQuadric, 0, section, 10, 1);
     glPopMatrix();
 }

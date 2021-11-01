@@ -11,15 +11,15 @@
 #include <cmath>
 #include <iostream>
 
-#define COLUMNS 30
+#define COLUMNS 20
 #define ROWS 20
 #define WIDTH 300
 #define HEIGHT 300
 #define HEIGHT_WALL 20
 
-#define DISTANCE_UNIT 15          // 300/20 = 15
-#define DISTANCE_SUBUNIT 0.88235  // 15/17 = 0.88235...
-#define PI 3.14150
+#define DISTANCE_UNIT 15         // 300/20 = 15
+#define DISTANCE_SUB_UNIT 0.9375  // 15/16 = 0.9375...
+#define PI 3.141592653589793238462643383279502884197169
 
 #define MOVE 1
 #define QUIET 2

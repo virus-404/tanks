@@ -26,7 +26,7 @@ void swap(int &a, int &b);
 int main(int argc, char *argv[]) {
     board = new Board(COLUMNS, ROWS);
     player = new Tank(new float[3]{0.20, 0.80, 0.20}, 'P');
-    enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
+    //enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
     anglealpha = 90;
     anglebeta = 30;
 
@@ -34,8 +34,8 @@ int main(int argc, char *argv[]) {
     player->setTranslation(board->getTranslationX(),board->getTranslationY());
     board->setPositionBoard(1, ROWS - 1, 'P');
 
-    enemy->setPosition(COLUMNS - 2, 1);
-    enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
+    //enemy->setPosition(COLUMNS - 2, 1);
+    //enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
@@ -74,7 +74,7 @@ void display() {
 
     board->draw();
     player->draw();
-    enemy->draw();
+    //enemy->draw();
     glutSwapBuffers();
 }
 
@@ -164,7 +164,7 @@ void idle() {
         last_t = t;
     else {
         player->integrate(t - last_t);
-        enemy->integrate(t - last_t);
+        //enemy->integrate(t - last_t);
         last_t = t;
     }
 
