@@ -272,20 +272,25 @@ void Tank::drawBox(int vertexes[8][3]) {
 
 void Tank::calcCoordinates(int vertexes [3]){
     //rotate phase
-    int center[2] = {8, 8};
+    int center[2] = {NUMBER_SUB_BLOCKS / 2, NUMBER_SUB_BLOCKS /2};
 
     double radius = sqrt(
         pow((double)vertexes[0] - center[0], 2) +
         pow((double)vertexes[1] - center[1], 2));  //pythagorean distance
 
     float beta = asin((vertexes[0] - center[0]) / radius); // Finding Beta which is the inital angle of the vertex respect to the 0º
-
-    if (vertexes[0] < center[0] && vertexes[1] > center [1]) beta += PI / 2;
-    else if (vertexes[0] < center[0] && vertexes[1] < center [1]) beta += PI;
-    else if (vertexes[0] > center[0] && vertexes[1] < center [1]) beta += (3*PI) / 2; // transposing beta to the corresponding quadran
     
-    vertexes[0] = round (center[0] + radius * cos(beta + alpha * PI / 180.00f));  //paremetric circle equations for X + transformation degrees to radians
-    vertexes[1] = round (center[1] + radius * sin(beta + alpha * PI / 180.00f));  //paremetric circle equations for Y + transformation degrees to radians
+
+    if (vertexes[0] < center[0] && vertexes[1] > center [1]) beta = beta + PI / 2; // transposing beta to the corresponding quadran
+    else if (vertexes[0] < center[0] && vertexes[1] < center [1]) beta = beta + PI;
+    else if (vertexes[0] > center[0] && vertexes[1] < center [1]) beta = beta + 3 * PI / 2; 
+    
+    cout << "X " << vertexes[0] << " Y  " << vertexes[1] << endl;
+    vertexes[0] = (int) round(center[0] + radius * cos(beta + (alpha * PI / 180.00f)));   //paremetric circle equations for X + transformation degrees to radians
+    vertexes[1] = (int) round(center[1] + radius * sin(beta + (alpha * PI / 180.00f)));    //paremetric circle equations for Y + transformation degrees to radians
+    cout << "X " << vertexes[0] << " Y  " << vertexes[1] << endl;  
+    cout << "-------------------------------------------------" << endl;
+    //https:  //stackoverflow.com/questions/31502120/sin-and-cos-give-unexpected-results-for-well-known-angles
 
     //translate phase
     vertexes[0] = (vertexes[0] * DISTANCE_SUB_UNIT) + x * DISTANCE_UNIT + translationX;
