@@ -13,8 +13,8 @@
 
 #define COLUMNS 30
 #define ROWS 20
-#define WIDTH 300
-#define HEIGHT 300
+#define WIDTH 30
+#define HEIGHT 30
 #define HEIGHT_WALL 20
 
 #define DISTANCE_UNIT 15  // 300/20 = 15

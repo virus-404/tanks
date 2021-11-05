@@ -134,26 +134,27 @@ void Tank::setTranslation(int translationX, int translationY){
 }
 
 void Tank::draw() {
-    int hull[8][3] = {
-        {2, 14, 8},   // a
-        {2, 14, 2},   // b
-        {2, 3, 2},    // c
-        {2, 3, 8},    // d
-        {11, 14, 8},  // e
-        {11, 3, 8},   // f
-        {11, 3, 2},   // g
-        {11, 14, 2}   // h
+    int edges = 8;
+    int hull[edges][3] = {
+        {4, 12, 8},   // a
+        {4, 12, 2},   // b
+        {4, 4, 2},    // c
+        {4, 4, 8},    // d
+        {12, 12, 8},  // e
+        {12, 4, 8},   // f
+        {12, 4, 2},   // g
+        {12, 12, 2}   // h
     };
 
-    int turret[8][3] = {
-        {3, 12, 12},  // a
-        {3, 12, 8},   // b
-        {3, 5, 8},    // c
-        {3, 5, 12},   // d
-        {8, 12, 12},  // e
-        {8, 5, 12},   // f
-        {8, 5, 8},    // g
-        {8, 12, 8}    // h
+    int turret[edges][3] = {
+        {6, 10, 12},   // a
+        {6, 10, 8},    // b
+        {6, 6, 8},     // c
+        {6, 6, 12},    // d
+        {10, 10, 12},  // e
+        {10, 6, 12},   // f
+        {10, 6, 8},    // g
+        {10, 10, 8}    // h
     };
 
     drawBox(hull);
@@ -168,52 +169,52 @@ void Tank::draw() {
 
     void Tank::drawBox(int vertexes[8][3]) {
         glDisable(GL_TEXTURE_2D);
-        glColor3f(this->color[0], this->color[1], this->color[2]);
+        glColor3f(this->color[0], this->color[1], this->color[2]);  //+ x * DISTANCE_UNIT + translationX, + y * DISTANCE_UNIT + translationY
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
-        glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
-        glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
-        glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
+        glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT , vertexes[1][1] * DISTANCE_SUB_UNIT , vertexes[1][2]);
+        glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT , vertexes[2][1] * DISTANCE_SUB_UNIT , vertexes[2][2]);
+        glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT , vertexes[6][1] * DISTANCE_SUB_UNIT , vertexes[6][2]);
+        glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT , vertexes[7][1] * DISTANCE_SUB_UNIT , vertexes[7][2]);
         glEnd();
 
         glColor3f(this->color[0], this->color[1], this->color[2]);
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
-        glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
-        glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
-        glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
+        glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT , vertexes[3][1] * DISTANCE_SUB_UNIT , vertexes[3][2]);
+        glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT , vertexes[0][1] * DISTANCE_SUB_UNIT , vertexes[0][2]);
+        glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT , vertexes[5][1] * DISTANCE_SUB_UNIT , vertexes[5][2]);
+        glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT , vertexes[4][1] * DISTANCE_SUB_UNIT , vertexes[4][2]);
         glEnd();
 
         glColor3f(this->color[0], this->color[1], this->color[2]);
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
-        glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
-        glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
-        glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
+        glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT , vertexes[3][1] * DISTANCE_SUB_UNIT , vertexes[3][2]);
+        glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT , vertexes[0][1] * DISTANCE_SUB_UNIT , vertexes[0][2]);
+        glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT , vertexes[1][1] * DISTANCE_SUB_UNIT , vertexes[1][2]);
+        glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT , vertexes[2][1] * DISTANCE_SUB_UNIT , vertexes[2][2]);
         glEnd();
 
         glColor3f(this->color[0], this->color[1], this->color[2]);
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[3][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[3][1]) + y * DISTANCE_UNIT + translationY, vertexes[3][2]);
-        glVertex3i((vertexes[2][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[2][1]) + y * DISTANCE_UNIT + translationY, vertexes[2][2]);
-        glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
-        glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
+        glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT , vertexes[3][1] * DISTANCE_SUB_UNIT , vertexes[3][2]);
+        glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT , vertexes[2][1] * DISTANCE_SUB_UNIT , vertexes[2][2]);
+        glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT , vertexes[6][1] * DISTANCE_SUB_UNIT , vertexes[6][2]);
+        glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT , vertexes[5][1] * DISTANCE_SUB_UNIT , vertexes[5][2]);
         glEnd();
 
         glColor3f(this->color[0], this->color[1], this->color[2]);
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[5][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[5][1]) + y * DISTANCE_UNIT + translationY, vertexes[5][2]);
-        glVertex3i((vertexes[6][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[6][1]) + y * DISTANCE_UNIT + translationY, vertexes[6][2]);
-        glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
-        glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
+        glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT , vertexes[5][1] * DISTANCE_SUB_UNIT , vertexes[5][2]);
+        glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT , vertexes[6][1] * DISTANCE_SUB_UNIT , vertexes[6][2]);
+        glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT , vertexes[7][1] * DISTANCE_SUB_UNIT , vertexes[7][2]);
+        glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT , vertexes[4][1] * DISTANCE_SUB_UNIT , vertexes[4][2]);
         glEnd();
 
         glColor3f(this->color[0], this->color[1], this->color[2]);
         glBegin(GL_QUADS);
-        glVertex3i((vertexes[0][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[0][1]) + y * DISTANCE_UNIT + translationY, vertexes[0][2]);
-        glVertex3i((vertexes[1][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[1][1]) + y * DISTANCE_UNIT + translationY, vertexes[1][2]);
-        glVertex3i((vertexes[7][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[7][1]) + y * DISTANCE_UNIT + translationY, vertexes[7][2]);
-        glVertex3i((vertexes[4][0] * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX, (vertexes[4][1]) + y * DISTANCE_UNIT + translationY, vertexes[4][2]);
+        glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT , vertexes[0][1] * DISTANCE_SUB_UNIT , vertexes[0][2]);
+        glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT , vertexes[1][1] * DISTANCE_SUB_UNIT , vertexes[1][2]);
+        glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT , vertexes[7][1] * DISTANCE_SUB_UNIT , vertexes[7][2]);
+        glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT , vertexes[4][1] * DISTANCE_SUB_UNIT , vertexes[4][2]);
         glEnd();
         glEnable(GL_TEXTURE_2D);
     }
@@ -222,80 +223,71 @@ void Tank::draw() {
         glDisable(GL_TEXTURE_2D);
 
         Cylinder *cyl = new Cylinder();
-
         switch (part) {
-            case WHEEL:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (2.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-            case WHEEL + 1:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (6.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-                break;
-            case WHEEL + 2:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (10.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (17.0f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-            case WHEEL + 3:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (2.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,  //for artifact issues
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-            case WHEEL + 4:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (6.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-            case WHEEL + 5:
-                cyl->setLength(1);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (10.5f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (2.90f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    4.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(1.0f, 0.0f, 0.0f);
-                break;
-            case MAIN_GUN:
-                cyl->setLength(7);
-                cyl->setSection(2);
-                cyl->setPosition(
-                    (8.0f * DISTANCE_SUBUNIT) + x * DISTANCE_UNIT + translationX,
-                    (8.5f * DISTANCE_SUBUNIT) + y * DISTANCE_UNIT + translationY,
-                    10.0f);
-                cyl->setAngle(90.0f);
-                cyl->setAngleNorm(0.0f, 1.0f, 0.0f);
-                break;
-        }
+        case WHEEL:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                4.00f * DISTANCE_SUB_UNIT,
+                12.00f * DISTANCE_SUB_UNIT,
+                 4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case WHEEL + 1:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                8.00f * DISTANCE_SUB_UNIT,
+                12.00f * DISTANCE_SUB_UNIT,
+                4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case WHEEL + 2:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                12.00f * DISTANCE_SUB_UNIT,
+                12.0f * DISTANCE_SUB_UNIT,
+                 4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case WHEEL + 3:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                4.00f * DISTANCE_SUB_UNIT,
+                1.90f * DISTANCE_SUB_UNIT,  //for artifact issues
+                4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case WHEEL + 4:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                8.00f * DISTANCE_SUB_UNIT,
+                1.90f * DISTANCE_SUB_UNIT,
+                4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case WHEEL + 5:
+            cyl->setLength(2);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                12.00f * DISTANCE_SUB_UNIT,
+                1.90f * DISTANCE_SUB_UNIT,
+                 4.00f);
+            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+            break;
+        case MAIN_GUN:
+            cyl->setLength(5);
+            cyl->setSection(2);
+            cyl->setCoordinates(
+                10.0f * DISTANCE_SUB_UNIT,
+                8.0f * DISTANCE_SUB_UNIT,
+                10.0f);
+            cyl->setOrientation(90.0f, new float[3]{0.0f, 1.0f, 0.0f});
+            break;
+    }
         cyl->draw();
         delete cyl;
 

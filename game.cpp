@@ -72,9 +72,9 @@ void display() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
 
-    board->draw();
+    //board->draw();
     player->draw();
-    enemy->draw();
+    //enemy->draw();
     glutSwapBuffers();
 }
 
