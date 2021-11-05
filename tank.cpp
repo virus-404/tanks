@@ -165,6 +165,10 @@ void Tank::draw() {
 
     for (int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
     drawCylinder(MAIN_GUN);
+
+    //move to center
+    // rotate
+    // move to previous position
 }
 
     void Tank::drawBox(int vertexes[8][3]) {
