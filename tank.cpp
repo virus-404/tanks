@@ -137,12 +137,12 @@ void Tank::draw() {
     int edges = 8;
     int hull[edges][3] = {
         {4, 12, 8},   // a
-        {4, 12, 2},   // b
-        {4, 4, 2},    // c
+        {4, 12, 3},   // b
+        {4, 4, 3},    // c
         {4, 4, 8},    // d
         {12, 12, 8},  // e
         {12, 4, 8},   // f
-        {12, 4, 2},   // g
+        {12, 4, 3},   // g
         {12, 12, 2}   // h
     };
 
@@ -224,70 +224,70 @@ void Tank::draw() {
 
         Cylinder *cyl = new Cylinder();
         switch (part) {
-        case WHEEL:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                4.00f * DISTANCE_SUB_UNIT,
-                12.00f * DISTANCE_SUB_UNIT,
-                 4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case WHEEL + 1:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                8.00f * DISTANCE_SUB_UNIT,
-                12.00f * DISTANCE_SUB_UNIT,
-                4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case WHEEL + 2:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                12.00f * DISTANCE_SUB_UNIT,
-                12.0f * DISTANCE_SUB_UNIT,
-                 4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case WHEEL + 3:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                4.00f * DISTANCE_SUB_UNIT,
-                1.90f * DISTANCE_SUB_UNIT,  //for artifact issues
-                4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case WHEEL + 4:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                8.00f * DISTANCE_SUB_UNIT,
-                1.90f * DISTANCE_SUB_UNIT,
-                4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case WHEEL + 5:
-            cyl->setLength(2);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                12.00f * DISTANCE_SUB_UNIT,
-                1.90f * DISTANCE_SUB_UNIT,
-                 4.00f);
-            cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
-            break;
-        case MAIN_GUN:
-            cyl->setLength(5);
-            cyl->setSection(2);
-            cyl->setCoordinates(
-                10.0f * DISTANCE_SUB_UNIT,
-                8.0f * DISTANCE_SUB_UNIT,
-                10.0f);
-            cyl->setOrientation(90.0f, new float[3]{0.0f, 1.0f, 0.0f});
-            break;
-    }
+            case WHEEL:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    4.00f * DISTANCE_SUB_UNIT,
+                    14.00f * DISTANCE_SUB_UNIT,
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case WHEEL + 1:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    8.00f * DISTANCE_SUB_UNIT,
+                    14.00f * DISTANCE_SUB_UNIT,
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case WHEEL + 2:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    12.00f * DISTANCE_SUB_UNIT,
+                    14.00f * DISTANCE_SUB_UNIT,
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case WHEEL + 3:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    4.00f * DISTANCE_SUB_UNIT,
+                    4.00f * DISTANCE_SUB_UNIT,  
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case WHEEL + 4:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    8.00f * DISTANCE_SUB_UNIT,
+                    4.00f * DISTANCE_SUB_UNIT,
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case WHEEL + 5:
+                cyl->setLength(2);
+                cyl->setSection(2);
+                cyl->setCoordinates(
+                    12.00f * DISTANCE_SUB_UNIT,
+                    4.00f * DISTANCE_SUB_UNIT,
+                    4.00f);
+                cyl->setOrientation(90.0f, new float[3]{1.0f, 0.0f, 0.0f});
+                break;
+            case MAIN_GUN:
+                cyl->setLength(5);
+                cyl->setSection(1);
+                cyl->setCoordinates(
+                    10.00f * DISTANCE_SUB_UNIT,
+                    8.00f * DISTANCE_SUB_UNIT,
+                    10.0f);
+                cyl->setOrientation(90.0f, new float[3]{0.0f, 1.0f, 0.0f});
+                break;
+        }
         cyl->draw();
         delete cyl;
 

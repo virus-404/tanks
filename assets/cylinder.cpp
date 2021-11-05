@@ -44,6 +44,7 @@ void Cylinder::draw() {
         gluQuadric = gluNewQuadric();
 
     glPushMatrix();
+    
     glTranslatef(coordinates[0], coordinates[1], coordinates[2]);
     glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
    
