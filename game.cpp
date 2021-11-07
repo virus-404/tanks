@@ -106,7 +106,7 @@ void display() {
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0);
     char message [100] = "Time left: ";
-    //output(-300, 200, message);
+    output(-300, 200, message);
     glutSwapBuffers();
 }
 

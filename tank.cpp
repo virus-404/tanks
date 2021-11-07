@@ -95,7 +95,8 @@ void Tank::keyPressed(unsigned char key, Board *board) {
     if (key == 'w') {
         int delta_x = 0;
         int delta_y = 0;
-        switch (orientation % 360) {
+        
+        switch (mod(orientation, 360)) {
             case 0:
                 delta_x = 1;
                 break;
@@ -125,6 +126,10 @@ void Tank::keyPressed(unsigned char key, Board *board) {
             initRotation(orientation, 1000);
         }
     }
+}
+
+int Tank::mod(int n, int m) {
+    return (n % m + m) % m;
 }
 
 void Tank::setTranslation(int translationX, int translationY) {
