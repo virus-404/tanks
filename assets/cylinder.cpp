@@ -44,19 +44,16 @@ void Cylinder::draw() {
         gluQuadric = gluNewQuadric();
 
     glPushMatrix();
-    
+
     glTranslatef(coordinates[0], coordinates[1], coordinates[2]);
     glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
-   
-    glColor3f(1, 0, 1);
+
+    glColor3f(1, 1, 0);
     gluDisk(gluQuadric, 0, section, 10, 1);                       //Base black ;  inner = 0 --> No hollow
     gluCylinder(gluQuadric, section, section, length, 200, 200);  //Walls black 
     glTranslatef(0, 0, length);
     gluDisk(gluQuadric, 0, section, 10, 1);                       //Top black
 
-    glPopMatrix();
-
-
-    
+    glPopMatrix(); 
 
 }
