@@ -1,7 +1,7 @@
 #include <unistd.h>
 
 #include <iostream>
-
+#include <chrono>
 #include "./opengl.h"
 #include "board.cpp"
 #include "tank.cpp"
@@ -66,15 +66,28 @@ void output(GLfloat x, GLfloat y, char *text) {
     glTranslatef(x, y, 0);
     glColor3f(1,1,1);
     glScalef(0.5, 0.5, 0.5);
-    for (p = text; *p; p++)
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
 
-    int counter = 60;  //amount of seconds
-    //sleep(1);
-    while (counter >= 1) {
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, counter);
-        //sleep(1);
-        counter--;
+    for (p = text; *p; p++)
+      glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+
+    int counter = 60; //amount of seconds
+    auto start = std::chrono::system_clock::now();
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+
+    while (counter >= 1)
+    {
+        if (elapsed_seconds.count() == 1)
+        {
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, counter);
+            start = std::chrono::system_clock::now();
+            counter--;
+        }
+        else
+        {
+            end = std::chrono::system_clock::now();
+            elapsed_seconds = end - start;
+        }
     }
 
     glPopMatrix();
