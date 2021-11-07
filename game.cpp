@@ -1,6 +1,8 @@
 #include "./opengl.h"
 #include "board.cpp"
 #include "tank.cpp"
+#include <iostream>
+#include <unistd.h>
 
 using namespace std;
 
@@ -21,6 +23,7 @@ bool checkWall(int, int);
 bool checkPlayerGoal(int, int);
 bool checkEnemyGoal(int, int);
 void moveEnemy();
+void output(GLfloat, GLfloat, char*);
 void swap(int &a, int &b);
 
 int main(int argc, char *argv[]) {
@@ -55,6 +58,26 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+void output(GLfloat x, GLfloat y, char *text) {
+    char *p;
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    glScalef(0.5, 0.5, 0.5);
+    for (p = text; *p; p++)
+      glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+    
+    int counter = 60; //amount of seconds
+    //sleep(1);
+    while (counter >= 1)
+    {
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, counter);
+        //sleep(1);
+        counter--;
+    }
+    
+    glPopMatrix();
+}
+
 void display() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -74,7 +97,13 @@ void display() {
 
     board->draw();
     player->draw();
-    //enemy->draw();
+    enemy->draw();
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glEnable(GL_LINE_SMOOTH);
+    glLineWidth(2.0);
+    output(-300, 200, "Time left: ");
     glutSwapBuffers();
 }
 

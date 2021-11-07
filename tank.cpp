@@ -139,7 +139,7 @@ void Tank::keyPressed(unsigned char key, Board *board) {
 
 char Tank::getNextCardinal(bool clockwise){
     int length = 4;
-    char cardinalDirection[length] = {'N', 'E', 'S', 'W'};
+    char cardinalDirection[4] = {'N', 'E', 'S', 'W'};
     char tmp = 'N';
 
     for (int i = 0; i < length; i++){
