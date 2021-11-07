@@ -92,7 +92,6 @@ void Tank::integrate(long t) {
 }
 
 void Tank::keyPressed(unsigned char key, Board *board) {
-    cout << orientation << endl;
     if (key == 'w') {
         int delta_x = 0;
         int delta_y = 0;
@@ -118,12 +117,12 @@ void Tank::keyPressed(unsigned char key, Board *board) {
 
     } else {
         if (key == 'a') {
-            orientation = alpha - 90;
-            initRotation(alpha - 90, 1000);
+            orientation = alpha + 90;
+            initRotation(orientation, 1000);
 
         } else if (key == 'd') {
-            orientation = alpha + 90;
-            initRotation(alpha + 90, 1000);
+            orientation = alpha - 90;
+            initRotation(orientation, 1000);
         }
     }
 }
