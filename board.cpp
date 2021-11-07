@@ -40,8 +40,10 @@ Board::Board(int height, int width) {
     maze.maze(map);
     respawnPointGenerator();
     maze.showMaze(map);
-    wallTex = new Texture(); wallTex -> readJPEG("./textures/wall.jpg");
-    corrTex = new Texture(); corrTex -> readJPEG("./textures/bush.jpg");
+    wallTex = new Texture();
+    wallTex->readJPEG("./textures/wall.jpg");
+    corrTex = new Texture();
+    corrTex->readJPEG("./textures/bush.jpg");
 }
 
 void Board::respawnPointGenerator() {
@@ -60,7 +62,7 @@ void Board::respawnPointGenerator() {
 
     connected = false;
     i = 1;
-    j = map[i].size() -2;
+    j = map[i].size() - 2;
     map[i][j] = 'P';
 
     while (!connected) {
@@ -101,11 +103,11 @@ bool Board::isOccupied(int x, int y, char id) {
         return x == this->posP[0] && y == this->posP[1];
 }
 
-int Board::getTranslationX(){
+int Board::getTranslationX() {
     return -(int)round(WIDTH * 0.75f);  // WIDTH <--> COLUMNS
 }
 
-int Board::getTranslationY(){
+int Board::getTranslationY() {
     return -(int)round(HEIGHT * 0.50f);  // HEIGHT <--> ROWS
 }
 void Board::draw() {
@@ -201,8 +203,6 @@ void Board::draw() {
     }
 }
 
-
-
 void Board::loadTexture(Texture tex, int dim) {
     unsigned char *buffer2;
     long i, j;
@@ -220,7 +220,6 @@ void Board::loadTexture(Texture tex, int dim) {
             buffer2[3 * (i * dim + j) + 1] = tex.image[3 * (k * tex.width + h) + 1];
             buffer2[3 * (i * dim + j) + 2] = tex.image[3 * (k * tex.width + h) + 2];
         }
-    
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
