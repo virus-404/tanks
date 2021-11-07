@@ -1,8 +1,10 @@
+#include <unistd.h>
+
+#include <iostream>
+
 #include "./opengl.h"
 #include "board.cpp"
 #include "tank.cpp"
-#include <iostream>
-#include <unistd.h>
 
 using namespace std;
 
@@ -23,22 +25,22 @@ bool checkWall(int, int);
 bool checkPlayerGoal(int, int);
 bool checkEnemyGoal(int, int);
 void moveEnemy();
-void output(GLfloat, GLfloat, char*);
+void output(GLfloat, GLfloat, char *);
 void swap(int &a, int &b);
 
 int main(int argc, char *argv[]) {
     board = new Board(COLUMNS, ROWS);
     player = new Tank(new float[3]{0.20, 0.80, 0.20}, 'P');
-    //enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
+    enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
     anglealpha = 90;
     anglebeta = 30;
 
     player->setPosition(1, ROWS - 1);
-    player->setTranslation(board->getTranslationX(),board->getTranslationY());
+    player->setTranslation(board->getTranslationX(), board->getTranslationY());
     board->setPositionBoard(1, ROWS - 1, 'P');
 
-    //enemy->setPosition(COLUMNS - 2, 1);
-    //enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
+    enemy->setPosition(COLUMNS - 2, 1);
+    enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
@@ -48,7 +50,7 @@ int main(int argc, char *argv[]) {
     glutCreateWindow("Tanks board");
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-    
+
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutIdleFunc(idle);
@@ -62,19 +64,19 @@ void output(GLfloat x, GLfloat y, char *text) {
     char *p;
     glPushMatrix();
     glTranslatef(x, y, 0);
+    glColor3f(1,1,1);
     glScalef(0.5, 0.5, 0.5);
     for (p = text; *p; p++)
-      glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-    
-    int counter = 60; //amount of seconds
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+
+    int counter = 60;  //amount of seconds
     //sleep(1);
-    while (counter >= 1)
-    {
+    while (counter >= 1) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN, counter);
         //sleep(1);
         counter--;
     }
-    
+
     glPopMatrix();
 }
 
@@ -103,12 +105,13 @@ void display() {
     glEnable(GL_BLEND);
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0);
-    output(-300, 200, "Time left: ");
+    char message [100] = "Time left: ";
+    output(-300, 200, message);
     glutSwapBuffers();
 }
 
 void keyboard(unsigned char c, int x, int y) {
-    if (player->getState() == MOVE) return;
+    if (player->getState() != QUIET) return;
     if (c == 'w')
         player->keyPressed(c, board);  // UP
     else if (c == 'd')
@@ -159,7 +162,7 @@ void positionObserver(float alpha, float beta, int radi) {
 }
 
 void moveEnemy() {
-    if (enemy->getState() != QUIET) return;   
+    if (enemy->getState() != QUIET) return;
     int direction[4];
     direction[0] = 0;  // w
     direction[1] = 1;  // d
@@ -193,7 +196,7 @@ void idle() {
         last_t = t;
     else {
         player->integrate(t - last_t);
-        //enemy->integrate(t - last_t);
+        enemy->integrate(t - last_t);
         last_t = t;
     }
 
