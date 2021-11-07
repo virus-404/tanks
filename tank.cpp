@@ -16,14 +16,8 @@ class Tank {
 
     long time_remaining;
     float *color;
-    char id, orientation;
-    int state;
-    int translationX;
-    int translationY;
-
-    int rotationX;
-    int rotationY;
-    int rotationAlpha;
+    char id;
+    int state, orientation, translationX, translationY;
 
     void initMovement(int, int, int);
     void initRotation(int, int);
@@ -47,7 +41,8 @@ Tank::Tank(float *color, char id) {
     this->color = color;
     this->id = id;
     state = QUIET;
-    orientation = 'E';
+    orientation = 0;
+    alpha = orientation;
 }
 
 int Tank::getState() {
@@ -58,8 +53,6 @@ int Tank::getState() {
 void Tank::setPosition(int x, int y) {
     this->x = x;
     this->y = y;
-    alpha = 90;  //Heding east
-    orientation = 'E';
 }
 
 void Tank::initMovement(int destination_x, int destination_y, int duration) {
@@ -69,7 +62,7 @@ void Tank::initMovement(int destination_x, int destination_y, int duration) {
     time_remaining = duration;
 }
 void Tank::initRotation(int destination_a, int duration) {
-    w_angular = destination_a / duration;  //since --> (destination_a + alpha) - alpha = destination_a
+    w_angular = (destination_a - alpha) / duration;  
     state = ROTATE;
     time_remaining = duration;
 }
@@ -93,27 +86,27 @@ void Tank::integrate(long t) {
     } else if (state == ROTATE && t >= time_remaining) {
         alpha = alpha + w_angular * t;
         time_remaining -= t;
-        alpha = getFinalOrientation();
+        alpha = orientation;
         state = QUIET;
     }
 }
 
 void Tank::keyPressed(unsigned char key, Board *board) {
+    cout << orientation << endl;
     if (key == 'w') {
         int delta_x = 0;
         int delta_y = 0;
-
-        switch (orientation) {
-            case 'N':
-                delta_y = 1;
-                break;
-            case 'S':
-                delta_y = -1;
-                break;
-            case 'E':
+        switch (orientation % 360) {
+            case 0:
                 delta_x = 1;
                 break;
-            case 'W':
+            case 90:
+                delta_y = 1;
+                break;
+            case 270:
+                delta_y = -1;
+                break;
+            case 180:
                 delta_x = -1;
                 break;
         }
@@ -125,48 +118,14 @@ void Tank::keyPressed(unsigned char key, Board *board) {
 
     } else {
         if (key == 'a') {
-            orientation = getNextCardinal(false);
-            initRotation(-90, 750);
+            orientation = alpha - 90;
+            initRotation(alpha - 90, 1000);
 
         } else if (key == 'd') {
-            orientation = getNextCardinal(true);
-            initRotation(90, 750);
+            orientation = alpha + 90;
+            initRotation(alpha + 90, 1000);
         }
     }
-}
-
-char Tank::getNextCardinal(bool clockwise) {
-    int length = 4;
-    char cardinalDirection[4] = {'N', 'E', 'S', 'W'};
-    char tmp = 'N';
-
-    for (int i = 0; i < length; i++) {
-        if (orientation == cardinalDirection[i]) {
-            if (clockwise) {
-                tmp = cardinalDirection[mod((i + 1), length)];
-            } else {
-                tmp = cardinalDirection[mod((i - 1), length)];
-            }
-        }
-    }
-    return tmp;
-}
-
-int Tank::mod(int n, int m) {
-    return (n % m + m) % m;
-}
-
-int Tank::getFinalOrientation() {
-    if (orientation == 'N') {
-        return 90;
-    } else if (orientation == 'E') {
-        return 0;
-    } else if (orientation == 'S') {
-        return 270;
-    } else {
-        return 180;
-    }
-    return -1;
 }
 
 void Tank::setTranslation(int translationX, int translationY) {

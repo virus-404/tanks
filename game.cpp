@@ -64,6 +64,7 @@ void output(GLfloat x, GLfloat y, char *text) {
     char *p;
     glPushMatrix();
     glTranslatef(x, y, 0);
+    glColor3f(1,1,1);
     glScalef(0.5, 0.5, 0.5);
     for (p = text; *p; p++)
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
@@ -98,7 +99,7 @@ void display() {
 
     board->draw();
     player->draw();
-    //enemy->draw();
+    enemy->draw();
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
