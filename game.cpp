@@ -24,14 +24,15 @@ Tank *enemy;
 
 void display();
 void keyboard(unsigned char, int, int);
-void positionObserver(float alpha, float beta, int radi);
+void positionObserver(float, float, int);
 void idle();
 bool checkWall(int, int);
 bool checkPlayerGoal(int, int);
 bool checkEnemyGoal(int, int);
 void moveEnemy();
 void output(GLfloat, GLfloat, string);
-void swap(int &a, int &b);
+void swap(int, int);
+int mod(int, int);
 
 int main(int argc, char *argv[]) {
     board = new Board(COLUMNS, ROWS);
@@ -67,7 +68,6 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-
 void display() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -95,11 +95,20 @@ void display() {
     glLineWidth(2.0);
 
     std::clock_t end = std::clock();
+    int seconds = mod((end - init) / CLOCKS_PER_SEC, 240);
 
-    string message = "Time left: " + to_string((end - init)/CLOCKS_PER_SEC) + " s";
-
-    output(-300, 200, message);
-    glutSwapBuffers();
+    if (seconds == 239) {
+        string message = "GAME OVER !:(";
+        output(-300, 200, message);
+        glutSwapBuffers();
+        sleep(2);
+        exit(0);
+    } else {
+        string message = "Time left: " + to_string(seconds) + " s";
+        output(-300, 200, message);
+        glutSwapBuffers();
+    }
+    
 }
 
 void keyboard(unsigned char c, int x, int y) {
@@ -204,4 +213,8 @@ void output(GLfloat x, GLfloat y, string text) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN, s);
 
     glPopMatrix();
+}
+
+int mod(int n, int m) {
+    return (n % m + m) % m;
 }
