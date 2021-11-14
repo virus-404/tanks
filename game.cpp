@@ -95,9 +95,9 @@ void display() {
     glLineWidth(2.0);
 
     std::clock_t end = std::clock();
-    int seconds = mod((end - init) / CLOCKS_PER_SEC, 240);
+    int seconds = 60 - mod((end - init) / CLOCKS_PER_SEC, 60);
 
-    if (seconds == 239) {
+    if (seconds == 1) {
         string message = "GAME OVER !:(";
         output(-300, 200, message);
         glutSwapBuffers();
