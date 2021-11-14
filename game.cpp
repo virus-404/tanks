@@ -1,4 +1,8 @@
+#include <string.h>
 #include <unistd.h>
+
+#include <chrono>
+#include <ctime>
 
 #include <iostream>
 
@@ -12,6 +16,7 @@ int keyflag = 0;
 long last_t = 0;
 int anglealpha = 0;
 int anglebeta = 0;
+std::clock_t init;
 
 Board *board;
 Tank *player;
@@ -25,7 +30,7 @@ bool checkWall(int, int);
 bool checkPlayerGoal(int, int);
 bool checkEnemyGoal(int, int);
 void moveEnemy();
-void output(GLfloat, GLfloat, char *);
+void output(GLfloat, GLfloat, string);
 void swap(int &a, int &b);
 
 int main(int argc, char *argv[]) {
@@ -34,6 +39,8 @@ int main(int argc, char *argv[]) {
     enemy = new Tank(new float[3]{0.83, 0.00, 0.00}, 'E');
     anglealpha = 90;
     anglebeta = 30;
+    init = std::clock();
+
 
     player->setPosition(1, ROWS - 1);
     player->setTranslation(board->getTranslationX(), board->getTranslationY());
@@ -60,25 +67,6 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void output(GLfloat x, GLfloat y, char *text) {
-    char *p;
-    glPushMatrix();
-    glTranslatef(x, y, 0);
-    glColor3f(1,1,1);
-    glScalef(0.5, 0.5, 0.5);
-    for (p = text; *p; p++)
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-
-    int counter = 60;  //amount of seconds
-    //sleep(1);
-    while (counter >= 1) {
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, counter);
-        //sleep(1);
-        counter--;
-    }
-
-    glPopMatrix();
-}
 
 void display() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -105,7 +93,11 @@ void display() {
     glEnable(GL_BLEND);
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0);
-    char message [100] = "Time left: ";
+
+    std::clock_t end = std::clock();
+
+    string message = "Time left: " + to_string((end - init)/CLOCKS_PER_SEC) + " s";
+
     output(-300, 200, message);
     glutSwapBuffers();
 }
@@ -191,7 +183,7 @@ void idle() {
     long t;
 
     t = glutGet(GLUT_ELAPSED_TIME);
-    //moveEnemy();
+    moveEnemy();
     if (last_t == 0)
         last_t = t;
     else {
@@ -201,4 +193,15 @@ void idle() {
     }
 
     glutPostRedisplay();
+}
+void output(GLfloat x, GLfloat y, string text) {
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    glColor3f(1, 1, 1);
+    glScalef(0.5, 0.5, 0.5);
+
+    for (char s : text) 
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, s);
+
+    glPopMatrix();
 }
