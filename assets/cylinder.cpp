@@ -48,7 +48,8 @@ void Cylinder::draw() {
     glTranslatef(coordinates[0], coordinates[1], coordinates[2]);
     glRotatef(angle, angelNorm[0], angelNorm[1], angelNorm[2]);
 
-    glColor3f(0, 0, 0);
+    GLfloat material[4] = {0.01f, 0.01f, 0.01f, 1.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     gluDisk(gluQuadric, 0, section, 10, 1);                       //Base black ;  inner = 0 --> No hollow
     gluCylinder(gluQuadric, section, section, length, 200, 200);  //Walls black 
     glTranslatef(0, 0, length);

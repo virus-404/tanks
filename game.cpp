@@ -87,13 +87,23 @@ void display() {
     glPolygonMode(GL_BACK, GL_FILL);
 
     GLint position[4];
+    GLfloat color[4];
+    //-- Ambient light
 
     position[0] = 0;
     position[1] = 0;
     position[2] = 0;
     position[3] = 1;
     glLightiv(GL_LIGHT0, GL_POSITION, position);
+
+    color[0] = 0.1;
+    color[1] = 0.1;
+    color[2] = 0.1;
+    color[3] = 1;
+    glLightfv(GL_LIGHT0, GL_AMBIENT, color);
+    glEnable(GL_LIGHT0);
     
+
     board->draw();
     player->draw();
     enemy->draw();

@@ -176,7 +176,8 @@ void Tank::draw() {
 
 void Tank::drawBox(int vertexes[8][3]) {
     glDisable(GL_TEXTURE_2D);
-    glColor3f(this->color[0], this->color[1], this->color[2]);  
+    GLfloat material[4] = {this->color[0], this->color[1], this->color[2], 1.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][2]);
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
@@ -184,7 +185,7 @@ void Tank::drawBox(int vertexes[8][3]) {
     glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][2]);
     glEnd();
 
-    glColor3f(this->color[0], this->color[1], this->color[2]);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
@@ -192,7 +193,7 @@ void Tank::drawBox(int vertexes[8][3]) {
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][2]);
     glEnd();
 
-    glColor3f(this->color[0], this->color[1], this->color[2]);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
@@ -200,7 +201,7 @@ void Tank::drawBox(int vertexes[8][3]) {
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
     glEnd();
 
-    glColor3f(this->color[0], this->color[1], this->color[2]);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
@@ -208,7 +209,7 @@ void Tank::drawBox(int vertexes[8][3]) {
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][2]);
     glEnd();
 
-    glColor3f(this->color[0], this->color[1], this->color[2]);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][2]);
     glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][2]);
@@ -216,7 +217,7 @@ void Tank::drawBox(int vertexes[8][3]) {
     glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][2]);
     glEnd();
 
-    glColor3f(this->color[0], this->color[1], this->color[2]);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     glBegin(GL_QUADS);
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
     glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][2]);
