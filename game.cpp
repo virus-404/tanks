@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
     glutCreateWindow("Tanks board");
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
@@ -85,6 +86,14 @@ void display() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
 
+    GLint position[4];
+
+    position[0] = 0;
+    position[1] = 0;
+    position[2] = 0;
+    position[3] = 1;
+    glLightiv(GL_LIGHT0, GL_POSITION, position);
+    
     board->draw();
     player->draw();
     enemy->draw();

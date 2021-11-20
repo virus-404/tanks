@@ -111,6 +111,30 @@ int Board::getTranslationY() {
     return -(int)round(HEIGHT * 0.50f);  // HEIGHT <--> ROWS
 }
 void Board::draw() {
+    GLint position[4];
+    GLfloat color[4];
+    GLfloat material[4];
+
+    //-- Ambient light
+
+    position[0] = 0;
+    position[1] = 0;
+    position[2] = 0;
+    position[3] = 1;
+    glLightiv(GL_LIGHT0, GL_POSITION, position);
+
+    color[0] = 0.1;
+    color[1] = 0.1;
+    color[2] = 0.1;
+    color[3] = 1;
+    glLightfv(GL_LIGHT0, GL_AMBIENT, color);
+    glEnable(GL_LIGHT0);
+
+    material[0] = 1.0;
+    material[1] = 1.0;
+    material[2] = 1.0;
+    material[3] = 1.0;
+
     int translationX = getTranslationX();
     int translationY = getTranslationY();
 
@@ -125,6 +149,8 @@ void Board::draw() {
         {1, 1, 0}   // h
     };
 
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    
     for (int i = 0; i < map.size(); i++) {         
          for (int j = 0; j < map[i].size(); j++) {  
             switch (map[i][j]) {
@@ -223,7 +249,7 @@ void Board::loadTexture(Texture tex, int dim) {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dim, dim, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer2);
     free(buffer2);
 }
