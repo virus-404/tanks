@@ -130,11 +130,6 @@ void Board::draw() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, color);
     glEnable(GL_LIGHT0);
 
-    material[0] = 1.0;
-    material[1] = 1.0;
-    material[2] = 1.0;
-    material[3] = 1.0;
-
     int translationX = getTranslationX();
     int translationY = getTranslationY();
 
@@ -149,33 +144,57 @@ void Board::draw() {
         {1, 1, 0}   // h
     };
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
     
+
+    
+
     for (int i = 0; i < map.size(); i++) {         
-         for (int j = 0; j < map[i].size(); j++) {  
-            switch (map[i][j]) {
-                case 'W':
-                    loadTexture(*(wallTex), 64);
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    break;
-                case 'E':
-                    glDisable(GL_TEXTURE_2D);
-                    glColor3f(0.66, 0, 0);
-                    break;
-                case 'P':
-                    glDisable(GL_TEXTURE_2D);
-                    glColor3f(0.294, 0.325, 0.125);
-                    break;
-                case ' ':
-                    loadTexture(*(corrTex), 64);  // save into a variable
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    glBegin(GL_QUADS);
-                    glTexCoord2f(-4.0, 0.0); glVertex3i(i * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
-                    glTexCoord2f(4.0, 0.0); glVertex3i((i + 1) * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
-                    glTexCoord2f(4.0, 4.0); glVertex3i((i + 1) * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
-                    glTexCoord2f(-4.0, 4.0); glVertex3i(i * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
-                    glEnd();
-                    break;
+         for (int j = 0; j < map[i].size(); j++) {           
+             switch (map[i][j]) {
+                 case 'W':
+                     material[0] = 1.0;
+                     material[1] = 1.0;
+                     material[2] = 1.0;
+                     material[3] = 1.0;
+                     loadTexture(*(wallTex), 64);
+                     glBindTexture(GL_TEXTURE_2D, 0);
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+                     break;
+                 case 'E':
+                     material[0] = 0.666f;
+                     material[1] = 0.000f;
+                     material[2] = 0.000f;
+                     material[3] = 1.000f;
+                     glDisable(GL_TEXTURE_2D);
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+                     break;
+                 case 'P':
+                     glDisable(GL_TEXTURE_2D);
+                     material[0] = 0.294f;
+                     material[1] = 0.325f;
+                     material[2] = 0.125f;
+                     material[3] = 1.000f;
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+                     break;
+                 case ' ':
+                     material[0] = 1.0;
+                     material[1] = 1.0;
+                     material[2] = 1.0;
+                     material[3] = 1.0;
+                     loadTexture(*(corrTex), 64);  // save into a variable
+                     glBindTexture(GL_TEXTURE_2D, 0);
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+                     glBegin(GL_QUADS);
+                     glTexCoord2f(-4.0, 0.0);
+                     glVertex3i(i * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
+                     glTexCoord2f(4.0, 0.0);
+                     glVertex3i((i + 1) * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
+                     glTexCoord2f(4.0, 4.0);
+                     glVertex3i((i + 1) * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
+                     glTexCoord2f(-4.0, 4.0);
+                     glVertex3i(i * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
+                     glEnd();
+                     break;
             }
             
             if (map[i][j] != ' ') {
