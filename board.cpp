@@ -127,6 +127,17 @@ void Board::draw() {
         {1, 1, 0}   // h
     };
 
+    int cubeNormalNormalized[8][3] = {
+        {-1, 1, 1},    // a
+        {-1, 1, -1},   // b
+        {-1, -1, -1},  // c
+        {-1, -1, 1},   // d
+        {1, 1, 1},     // e
+        {1, -1, 1},    // f
+        {1, -1, -1},   // g
+        {1, 1, -1}     // h
+    };
+
     for (int i = 0; i < map.size(); i++) {         
          for (int j = 0; j < map[i].size(); j++) {           
              switch (map[i][j]) {
@@ -135,9 +146,9 @@ void Board::draw() {
                      material[1] = 1.000f;
                      material[2] = 1.000f;
                      material[3] = 1.000f;
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
                      loadTexture(*(wallTex), 64);
                      glBindTexture(GL_TEXTURE_2D, 0);
-                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
                      break;
                  case 'E':
                      material[0] = 0.666f;
@@ -160,27 +171,30 @@ void Board::draw() {
                      material[1] = 1.000f;
                      material[2] = 1.000f;
                      material[3] = 1.000f;
+                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
                      loadTexture(*(corrTex), 64);  // save into a variable
                      glBindTexture(GL_TEXTURE_2D, 0);
-                     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+                     glShadeModel(GL_FLAT);
                      glBegin(GL_QUADS);
-                     glTexCoord2f(-4.0, 0.0);
-                     glVertex3i(i * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
-                     glTexCoord2f(4.0, 0.0);
-                     glVertex3i((i + 1) * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
-                     glTexCoord2f(4.0, 4.0);
-                     glVertex3i((i + 1) * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
-                     glTexCoord2f(-4.0, 4.0);
-                     glVertex3i(i * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
+                     glNormal3f(0, 0, 1);
+                     glTexCoord2f(-4.0, 0.0); glVertex3i(i * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
+                     glTexCoord2f(4.0, 0.0); glVertex3i((i + 1) * DISTANCE_UNIT + translationX, j * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
+                     glTexCoord2f(4.0, 4.0); glVertex3i((i + 1) * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
+                     glTexCoord2f(-4.0, 4.0); glVertex3i(i * DISTANCE_UNIT + translationX, (j + 1) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
                      glEnd();
                      break;
             }
             
             if (map[i][j] != ' ') {
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
                 glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
+                glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
                 glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
+                glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
                 glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
+                glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
                 glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
                 glEnd();
                 glEnable(GL_TEXTURE_2D);
@@ -188,38 +202,63 @@ void Board::draw() {
 
             if (map[i][j] == 'W') {
 
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
+                glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
+                glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
+                glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
                 glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
                 glEnd();
 
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
+                glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
                 glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
+                glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
+                glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
                 glEnd();
 
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[3][0]) * DISTANCE_UNIT + translationX, (j + vertex[3][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[3][2]);
+                glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
                 glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[2][0]) * DISTANCE_UNIT + translationX, (j + vertex[2][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[2][2]);
+                glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
+                glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
                 glEnd();
 
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[5][0]) * DISTANCE_UNIT + translationX, (j + vertex[5][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[5][2]);
+                glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
                 glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[6][0]) * DISTANCE_UNIT + translationX, (j + vertex[6][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[6][2]);
+                glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
+                glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
                 glEnd();
 
+                glShadeModel(GL_SMOOTH);
                 glBegin(GL_QUADS);
+                glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
                 glTexCoord2f(-4.0, 0.0);glVertex3i((i + vertex[0][0]) * DISTANCE_UNIT + translationX, (j + vertex[0][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[0][2]);
+                glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
                 glTexCoord2f(4.0, 0.0);glVertex3i((i + vertex[1][0]) * DISTANCE_UNIT + translationX, (j + vertex[1][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[1][2]);
+                glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
                 glTexCoord2f(4.0, 4.0);glVertex3i((i + vertex[7][0]) * DISTANCE_UNIT + translationX, (j + vertex[7][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[7][2]);
+                glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
                 glTexCoord2f(-4.0, 4.0);glVertex3i((i + vertex[4][0]) * DISTANCE_UNIT + translationX, (j + vertex[4][1]) * DISTANCE_UNIT + translationY, HEIGHT_WALL * vertex[4][2]);
                 glEnd();
             }

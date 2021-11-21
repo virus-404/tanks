@@ -149,6 +149,7 @@ void Tank::draw() {
         {12, 4, 3},    // g
         {12, 12, 3}    // h
     };
+
     int turret[edges][3] = {
         {6, 10, 12},   // a
         {6, 10, 8},    // b
@@ -163,65 +164,139 @@ void Tank::draw() {
     glPushMatrix();
     glTranslatef(x * DISTANCE_UNIT + translationX + CENTER_SUB_UNIT, + y * DISTANCE_UNIT + translationY + CENTER_SUB_UNIT, 0);
     glRotatef(alpha, 0, 0, 1);
+    
     drawBox(hull);
     float *tmp = this->color;
     this->color = new float[3]{0.847, 0.847, 0.847};
     drawBox(turret);
     this->color = tmp;
+
     for (int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
     drawCylinder(MAIN_GUN);
+
+    // --Spot light 
+
+    GLfloat position[4];
+    GLfloat color[4];
+    GLfloat direction[3];
+
+    position[0] = 0;
+    position[1] = 0;
+    position[2] = 0;
+    position[3] = 0.00000001;
+    glLightfv(GL_LIGHT1, GL_POSITION, position);
+
+    direction[0] = 1;
+    direction[1] = 0;
+    direction[2] = -0.1;
+    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, direction);
+
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 90);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
+
+    color[0] = 0.3;
+    color[1] = 0.3;
+    color[2] = 0.3;
+    color[3] = 1;
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, color);
+
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5);
+
+    glEnable(GL_LIGHT1);
 
     glPopMatrix();
 }
 
 void Tank::drawBox(int vertexes[8][3]) {
+      int cubeNormalNormalized[8][3] = {
+        {-1, 1, 1},    // a
+        {-1, 1, -1},   // b
+        {-1, -1, -1},  // c
+        {-1, -1, 1},   // d
+        {1, 1, 1},     // e
+        {1, -1, 1},    // f
+        {1, -1, -1},   // g
+        {1, 1, -1}     // h
+    };
+    
+
     glDisable(GL_TEXTURE_2D);
     GLfloat material[4] = {this->color[0], this->color[1], this->color[2], 1.0f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
     glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][2]);
+    glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
+    glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
     glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][2]);
+    glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
     glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][2]);
     glEnd();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
+    glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
+    glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
     glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][2]);
+    glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][2]);
     glEnd();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
+    glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
+    glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
     glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][2]);
+    glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
     glEnd();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[3][0], cubeNormalNormalized[3][1], cubeNormalNormalized[3][2]);
     glVertex3i(vertexes[3][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[3][2]);
+    glNormal3f(cubeNormalNormalized[2][0], cubeNormalNormalized[2][1], cubeNormalNormalized[2][2]);
     glVertex3i(vertexes[2][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[2][2]);
+    glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
     glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][2]);
+    glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][2]);
     glEnd();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[5][0], cubeNormalNormalized[5][1], cubeNormalNormalized[5][2]);
     glVertex3i(vertexes[5][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[5][2]);
+    glNormal3f(cubeNormalNormalized[6][0], cubeNormalNormalized[6][1], cubeNormalNormalized[6][2]);
     glVertex3i(vertexes[6][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[6][2]);
+    glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
     glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][2]);
+    glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
     glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][2]);
     glEnd();
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
+    glShadeModel(GL_SMOOTH);
     glBegin(GL_QUADS);
+    glNormal3f(cubeNormalNormalized[0][0], cubeNormalNormalized[0][1], cubeNormalNormalized[0][2]);
     glVertex3i(vertexes[0][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[0][2]);
+    glNormal3f(cubeNormalNormalized[1][0], cubeNormalNormalized[1][1], cubeNormalNormalized[1][2]);
     glVertex3i(vertexes[1][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[1][2]);
+    glNormal3f(cubeNormalNormalized[7][0], cubeNormalNormalized[7][1], cubeNormalNormalized[7][2]);
     glVertex3i(vertexes[7][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[7][2]);
+    glNormal3f(cubeNormalNormalized[4][0], cubeNormalNormalized[4][1], cubeNormalNormalized[4][2]);
     glVertex3i(vertexes[4][0] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][1] * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT, vertexes[4][2]);
     glEnd();
     glEnable(GL_TEXTURE_2D);
