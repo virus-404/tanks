@@ -105,7 +105,7 @@ void display() {
 
     board->draw();
     player->draw();
-    //enemy->draw();
+    enemy->draw();
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -113,7 +113,10 @@ void display() {
     glLineWidth(2.0);
 
     std::clock_t end = std::clock();
-    int seconds = 60 - mod((end - init) / CLOCKS_PER_SEC, 60);
+    int seconds = 60*3 - mod((end - init) / CLOCKS_PER_SEC, 60);
+
+    GLfloat material[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
 
     if (seconds == 1) {
         string message = "GAME OVER !:(";

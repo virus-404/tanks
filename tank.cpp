@@ -179,30 +179,39 @@ void Tank::draw() {
     GLfloat position[4];
     GLfloat color[4];
     GLfloat direction[3];
+    int light;
+    if (this->id == 'P')
+    {
+        light = GL_LIGHT1;
+    } else
+    {
+        light = GL_LIGHT2;
+    }
+    
 
     position[0] = 0;
     position[1] = 0;
     position[2] = 0;
     position[3] = 0.00000001;
-    glLightfv(GL_LIGHT1, GL_POSITION, position);
+    glLightfv(light, GL_POSITION, position);
 
     direction[0] = 1;
     direction[1] = 0;
     direction[2] = -0.1;
-    glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION, direction);
+    glLightfv(light,GL_SPOT_DIRECTION, direction);
 
-    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 90);
-    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
+    glLightf(light, GL_SPOT_CUTOFF, 90);
+    glLightf(light, GL_SPOT_EXPONENT, 120);
 
     color[0] = 0.3;
     color[1] = 0.3;
     color[2] = 0.3;
     color[3] = 1;
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, color);
+    glLightfv(light, GL_DIFFUSE, color);
 
-    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.5);
+    glLightf(light, GL_CONSTANT_ATTENUATION, 0.5);
 
-    glEnable(GL_LIGHT1);
+    glEnable(light);
 
     glPopMatrix();
 }
