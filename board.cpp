@@ -1,14 +1,13 @@
-#include <vector>
+#include "assets/maze.cpp"
+#include "assets/texture.cpp"
+#include "bullet.cpp"
+#include "opengl.h"
 
-#include "./assets/maze.cpp"
-#include "./assets/texture.cpp"
-#include "./opengl.h"
-#pragma once
 
 using namespace std;
 
-typedef std::vector<std::vector<char>> Map;
-typedef std::vector<char> Row;
+typedef vector<vector<char>> Map;
+typedef vector<char> Row;
 
 class Board {
    public:
@@ -26,6 +25,7 @@ class Board {
     Map map;
     Texture *wallTex;
     Texture *corrTex;
+    vector<Bullet> bulletList;
 
     void loadTexture(Texture, int);
     void respawnPointGenerator();

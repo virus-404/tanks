@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 #define COLUMNS 30
 #define ROWS 20

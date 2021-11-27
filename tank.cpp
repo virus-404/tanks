@@ -1,11 +1,11 @@
 #include "assets/cylinder.cpp"
-#include "board.cpp"
 #include "opengl.h"
 
 #define MAIN_GUN 0x0A
 #define WHEEL 0x00
 
 using namespace std;
+class Board;  //forward to break cyclic declarations
 
 class Tank {
    private:
@@ -35,6 +35,7 @@ class Tank {
     void integrate(long);
     void draw();
     void keyPressed(unsigned char, Board *);
+    void shootBullet();
 };
 
 Tank::Tank(float *color, char id) {
@@ -62,7 +63,7 @@ void Tank::initMovement(int destination_x, int destination_y, int duration) {
     time_remaining = duration;
 }
 void Tank::initRotation(int destination_a, int duration) {
-    w_angular = (destination_a - alpha) / duration;  
+    w_angular = (destination_a - alpha) / duration;
     state = ROTATE;
     time_remaining = duration;
 }
@@ -95,7 +96,7 @@ void Tank::keyPressed(unsigned char key, Board *board) {
     if (key == 'w') {
         int delta_x = 0;
         int delta_y = 0;
-        
+
         switch (mod(orientation, 360)) {
             case 0:
                 delta_x = 1;
@@ -120,10 +121,11 @@ void Tank::keyPressed(unsigned char key, Board *board) {
         if (key == 'a') {
             orientation = alpha + 90;
             initRotation(orientation, 1000);
-
         } else if (key == 'd') {
             orientation = alpha - 90;
             initRotation(orientation, 1000);
+        } else if (key == ' ') {
+            shootBullet();
         }
     }
 }
@@ -140,14 +142,14 @@ void Tank::setTranslation(int translationX, int translationY) {
 void Tank::draw() {
     int edges = 8;  //number of edges in a cube
     int hull[edges][3] = {
-        {4, 12, 8},    // a
-        {4, 12, 3},    // b
-        {4, 4, 3},     // c
-        {4, 4, 8},     // d
-        {12, 12, 8},   // e
-        {12, 4, 8},    // f
-        {12, 4, 3},    // g
-        {12, 12, 3}    // h
+        {4, 12, 8},   // a
+        {4, 12, 3},   // b
+        {4, 4, 3},    // c
+        {4, 4, 8},    // d
+        {12, 12, 8},  // e
+        {12, 4, 8},   // f
+        {12, 4, 3},   // g
+        {12, 12, 3}   // h
     };
 
     int turret[edges][3] = {
@@ -162,9 +164,9 @@ void Tank::draw() {
     };
 
     glPushMatrix();
-    glTranslatef(x * DISTANCE_UNIT + translationX + CENTER_SUB_UNIT, + y * DISTANCE_UNIT + translationY + CENTER_SUB_UNIT, 0);
+    glTranslatef(x * DISTANCE_UNIT + translationX + CENTER_SUB_UNIT, +y * DISTANCE_UNIT + translationY + CENTER_SUB_UNIT, 0);
     glRotatef(alpha, 0, 0, 1);
-    
+
     drawBox(hull);
     float *tmp = this->color;
     this->color = new float[3]{0.847, 0.847, 0.847};
@@ -174,20 +176,17 @@ void Tank::draw() {
     for (int i = 0; i < 6; i++) drawCylinder(WHEEL + i);
     drawCylinder(MAIN_GUN);
 
-    // --Spot light 
+    // --Spot light
 
     GLfloat position[4];
     GLfloat color[4];
     GLfloat direction[3];
     int light;
-    if (this->id == 'P')
-    {
+    if (this->id == 'P') {
         light = GL_LIGHT1;
-    } else
-    {
+    } else {
         light = GL_LIGHT2;
     }
-    
 
     position[0] = 0;
     position[1] = 0;
@@ -198,7 +197,7 @@ void Tank::draw() {
     direction[0] = 1;
     direction[1] = 0;
     direction[2] = -0.1;
-    glLightfv(light,GL_SPOT_DIRECTION, direction);
+    glLightfv(light, GL_SPOT_DIRECTION, direction);
 
     glLightf(light, GL_SPOT_CUTOFF, 90);
     glLightf(light, GL_SPOT_EXPONENT, 120);
@@ -217,7 +216,7 @@ void Tank::draw() {
 }
 
 void Tank::drawBox(int vertexes[8][3]) {
-      int cubeNormalNormalized[8][3] = {
+    int cubeNormalNormalized[8][3] = {
         {-1, 1, 1},    // a
         {-1, 1, -1},   // b
         {-1, -1, -1},  // c
@@ -227,7 +226,6 @@ void Tank::drawBox(int vertexes[8][3]) {
         {1, -1, -1},   // g
         {1, 1, -1}     // h
     };
-    
 
     glDisable(GL_TEXTURE_2D);
     GLfloat material[4] = {this->color[0], this->color[1], this->color[2], 1.0f};
@@ -384,4 +382,8 @@ void Tank::drawCylinder(int part) {
     delete cyl;
 
     glEnable(GL_TEXTURE_2D);
+}
+
+void Tank::shootBullet() {
+    
 }

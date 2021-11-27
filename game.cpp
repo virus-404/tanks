@@ -148,6 +148,8 @@ void keyboard(unsigned char c, int x, int y) {
         player->keyPressed(c, board);  // RIGHT
     else if (c == 'a')
         player->keyPressed(c, board);  // LEFT
+    else if (c == ' ')                 
+        player->keyPressed(c,board);   // SHOOT 
     else if (c == 'i' && anglebeta <= (90 - 4))
         anglebeta = (anglebeta + 3);
     else if (c == 'k' && anglebeta >= (-90 + 4))
