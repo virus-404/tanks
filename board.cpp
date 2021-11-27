@@ -18,6 +18,7 @@ class Board {
     int getTranslationX();
     int getTranslationY();
     void draw();
+    char winner = ' ';
 
    private:
     int posP[2] = {};
@@ -29,6 +30,7 @@ class Board {
     void loadTexture(Texture, int);
     void respawnPointGenerator();
     bool isOccupied(int, int, char);
+    char getWinner();
 };
 
 Board::Board(int height, int width) {
@@ -77,13 +79,17 @@ void Board::respawnPointGenerator() {
 bool Board::isValid(int x, int y, char id) {
     if ((map[x][y] == ' ' || map[x][y] == 'P' || map[x][y] == 'E') && !isOccupied(x, y, id)) {
         if (id == 'P') cout << "MAP ..> " << map[x][y] << " Coord: " << x << " " << y << endl;
-        if ((map[x][y] == 'P' && id == 'E') || (map[x][y] == 'E' && id == 'P')) {  // Winner is Enemy
-            cout << "Winner is " << id << endl;
+        if ((map[x][y] == 'P' && id == 'E') || (map[x][y] == 'E' && id == 'P')) {  
+            winner = id;
         }
         return true;
     } else {
         return false;
     }
+}
+
+char Board::getWinner(){
+    return winner;
 }
 
 void Board::setPositionBoard(int x, int y, char id) {

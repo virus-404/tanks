@@ -118,7 +118,15 @@ void display() {
     GLfloat material[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
 
-    if (seconds == 1) {
+    if(board->winner != ' ') {
+        string message;
+        if (board->winner == 'P') message = "Player wins!";
+        else  message = "Enemy wins!"; 
+        output(-300, 200, message);
+        glutSwapBuffers();
+        sleep(2);
+        exit(0);
+    } else if (seconds == 1) {
         string message = "GAME OVER !:(";
         output(-300, 200, message);
         glutSwapBuffers();
