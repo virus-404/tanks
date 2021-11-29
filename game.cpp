@@ -9,6 +9,7 @@
 #include "./opengl.h"
 #include "board.cpp"
 #include "tank.cpp"
+#include "bullet.cpp"
 
 using namespace std;
 
@@ -229,6 +230,7 @@ void idle() {
     else {
         player->integrate(t - last_t);
         enemy->integrate(t - last_t);
+        for (auto &bullet : board->getBullets()) bullet->integrate(t - last_t);
         last_t = t;
     }
 

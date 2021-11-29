@@ -1,29 +1,10 @@
 #include "opengl.h"
-
-using namespace std;
-class Board;
-class Cylinder;
-
-class Bullet {
-   private:
-    float x, y;
-    char shooter;
-    Board *board;
-
-   public:
-    Bullet(float, float, char);
-    void setBoard(Board*);
-    void draw();
-};
+#include "bullet.h"
 
 Bullet::Bullet(float x, float y, char shooter) {
     this->x = x;
     this->y = y;
     this->shooter = shooter;
-}
-
-void Bullet::setBoard(Board *board){
-    this->board = board;
 }
 
 void Bullet::draw() {
@@ -43,4 +24,24 @@ void Bullet::draw() {
     delete cyl;
     */
     glEnable(GL_TEXTURE_2D);
+}
+
+void Bullet::initMovement(int destination_x, int destination_y, int duration) {
+    vx = (destination_x - x) / duration;
+    vy = (destination_y - y) / duration;
+    state = MOVE;
+    time_remaining = duration;
+}
+
+void Bullet::integrate (long t) {
+    if(state == MOVE && t < time_remaining) {
+        x = x + vx * t;
+        y = y + vy * t;
+        time_remaining -= t;
+    }
+    else if (state == MOVE && t >= time_remaining) {
+        x = x + vx * time_remaining;
+        y = y + vy * time_remaining;
+        state = QUIET;    
+    }
 }

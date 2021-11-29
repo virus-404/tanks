@@ -27,5 +27,6 @@
 #define MOVE 1
 #define QUIET 2
 #define ROTATE 3
+#define DEAD 4
 
 #pragma once

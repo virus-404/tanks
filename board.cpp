@@ -1,37 +1,4 @@
-#include "assets/maze.cpp"
-#include "assets/texture.cpp"
-#include "bullet.cpp"
-#include "opengl.h"
-
-
-using namespace std;
-
-typedef vector<vector<char>> Map;
-typedef vector<char> Row;
-
-class Board {
-   public:
-    Board(int, int);
-    bool isValid(int, int, char);
-    void setPositionBoard(int x, int y, char id);
-    int getTranslationX();
-    int getTranslationY();
-    void draw();
-    char winner = ' ';
-
-   private:
-    int posP[2] = {};
-    int posE[2] = {};
-    Map map;
-    Texture *wallTex;
-    Texture *corrTex;
-    vector<Bullet> bulletList;
-
-    void loadTexture(Texture, int);
-    void respawnPointGenerator();
-    bool isOccupied(int, int, char);
-    char getWinner();
-};
+#include "board.h"
 
 Board::Board(int height, int width) {
     Maze maze;
@@ -270,7 +237,16 @@ void Board::draw() {
             }
         }
     }
+
+    for (auto &bullet : bulletList) bullet->draw();
+    for (int i = bulletList.size() - 1; i >= 0; i--)
+        if (bulletList[i]->state == QUIET){
+            delete bulletList[i];
+            bulletList.erase(bulletList.begin() + i);
+        }
+            
 }
+
 
 void Board::loadTexture(Texture tex, int dim) {
     unsigned char *buffer2;
@@ -296,3 +272,45 @@ void Board::loadTexture(Texture tex, int dim) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dim, dim, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer2);
     free(buffer2);
 }
+
+void Board::pushBullet(Bullet *bullet, char orientation){
+    vector<int> u = bulletFinalCoordinates(bullet->x, bullet->x, orientation);
+    bullet->initMovement(u[0], u[1], u[3]*200);
+    this->bulletList.push_back(bullet);
+}
+
+vector<int> Board::bulletFinalCoordinates(int x, int y, char orientation){
+    vector<int> calc = {0,0,0};
+    switch (orientation) {
+        case 'N':
+            while (map[x+1][y] == ' ') {
+                calc[1]++;
+                x++;
+            }
+            break;
+        case 'E':
+            while (map[x][y+1] == ' ') {
+                calc[0]++;
+                y++;
+            }
+        case 'S':
+            while (map[x-1][y] == ' ') {
+                calc[1]--;
+                x--;
+            }
+            break;
+        case 'W':
+            while (map[x][y-1] == ' ') {
+                calc[0]--;
+                y--;
+            }
+            break;
+    }
+    calc[2] = abs(calc[0]) + abs(calc[1]);
+    return calc;
+}
+
+vector<Bullet*> Board::getBullets(){
+    return this->bulletList;
+}
+

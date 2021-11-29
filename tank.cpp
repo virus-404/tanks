@@ -1,42 +1,4 @@
-#include "assets/cylinder.cpp"
-#include "opengl.h"
-
-#define MAIN_GUN 0x0A
-#define WHEEL 0x00
-
-using namespace std;
-class Board;  //forward to break cyclic declarations
-
-class Tank {
-   private:
-    float x, y;       //-- Current position
-    float vx, vy;     //-- Velocity vector
-    float alpha;      //-- Current angle
-    float w_angular;  //-- Angular speed;
-
-    long time_remaining;
-    float *color;
-    char id;
-    int state, orientation, translationX, translationY;
-
-    void initMovement(int, int, int);
-    void initRotation(int, int);
-    char getNextCardinal(bool);
-    int getFinalOrientation();
-    void drawBox(int[][3]);
-    void drawCylinder(int);
-    int mod(int, int);
-
-   public:
-    Tank(float *, char);
-    int getState();
-    void setPosition(int, int);
-    void setTranslation(int, int);
-    void integrate(long);
-    void draw();
-    void keyPressed(unsigned char, Board *);
-    void shootBullet();
-};
+#include "tank.h"
 
 Tank::Tank(float *color, char id) {
     this->color = color;
@@ -125,8 +87,8 @@ void Tank::keyPressed(unsigned char key, Board *board) {
             orientation = alpha - 90;
             initRotation(orientation, 1000);
         } else if (key == ' ') {
-            shootBullet();
-        }
+            board->pushBullet(new Bullet(round(x), round(y), id));
+        } 
     }
 }
 
@@ -384,6 +346,3 @@ void Tank::drawCylinder(int part) {
     glEnable(GL_TEXTURE_2D);
 }
 
-void Tank::shootBullet() {
-    
-}
