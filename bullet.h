@@ -8,6 +8,8 @@ class Bullet {
     float vx, vy;
     char shooter;
     long time_remaining;
+    int translationX; 
+    int translationY;
 
    public:
     float x, y;

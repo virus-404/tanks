@@ -241,14 +241,14 @@ void Board::draw() {
 
     for (auto &bullet : bulletList) 
         bullet->draw();
-
+    /*    
     for (auto &bullet : bulletList) {
         if (bullet->state == QUIET) {
             delete bullet;
             bullet = nullptr;
         }
     }
-    bulletList.erase(std::remove(bulletList.begin(), bulletList.end(), nullptr), bulletList.end());
+    bulletList.erase(std::remove(bulletList.begin(), bulletList.end(), nullptr), bulletList.end()); */
 }
 
 
@@ -279,8 +279,10 @@ void Board::loadTexture(Texture tex, int dim) {
 
 void Board::pushBullet(Bullet *bullet){
     vector<int> u = bulletFinalCoordinates((int)bullet->x, (int) bullet->y, bullet->orientation);
-    bullet->initMovement(u[0], u[1], u[3]*100);
-    this->bulletList.push_back(bullet);
+    if(u[2] != 0){
+        bullet->initMovement(bullet->x + u[0], bullet->y + u[1], u[2] * 250);
+        this->bulletList.push_back(bullet);
+    }
 }
 
 vector<int> Board::bulletFinalCoordinates(int x, int y, char orientation){

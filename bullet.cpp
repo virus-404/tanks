@@ -6,13 +6,16 @@ Bullet::Bullet(float x, float y, char shooter, char orientation) {
     this->y = y;
     this->shooter = shooter;
     this->orientation = orientation;
+    this->translationX =  -(int)round(WIDTH * 0.75f);  // WIDTH <--> COLUMNS
+    this->translationY =  -(int)round(HEIGHT * 0.50f);  // HEIGHT <--> ROWS
 }
 
 void Bullet::draw() {
+    glPushMatrix();
+    glTranslatef(x * DISTANCE_UNIT + translationX, + y * DISTANCE_UNIT + translationY, 0);
     glDisable(GL_TEXTURE_2D);
     Cylinder *cyl = new Cylinder();
-
-    cyl->setLength(2);
+    cyl->setLength(3);
     cyl->setSection(1);
     cyl->setCoordinates(
         CENTER_SUB_UNIT,
@@ -25,6 +28,8 @@ void Bullet::draw() {
     cyl->draw();
     delete cyl;
     glEnable(GL_TEXTURE_2D);
+
+    glPopMatrix();
 }
 
 void Bullet::initMovement(int destination_x, int destination_y, int duration) {
@@ -45,6 +50,6 @@ void Bullet::integrate (long t) {
         y = y + vy * time_remaining;
         this->state = QUIET; 
         x = round(x); 
-        y = round(y);   
+        y = round(y);
     }
 }
