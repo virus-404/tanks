@@ -102,7 +102,7 @@ void display() {
     color[2] = 0.1;
     color[3] = 1;
     glLightfv(GL_LIGHT0, GL_AMBIENT, color);
-    //glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT0);
 
     board->draw();
     player->draw();

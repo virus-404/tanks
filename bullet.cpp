@@ -1,28 +1,29 @@
 #include "opengl.h"
 #include "bullet.h"
 
-Bullet::Bullet(float x, float y, char shooter) {
+Bullet::Bullet(float x, float y, char shooter, char orientation) {
     this->x = x;
     this->y = y;
     this->shooter = shooter;
+    this->orientation = orientation;
 }
 
 void Bullet::draw() {
     glDisable(GL_TEXTURE_2D);
-    /*
     Cylinder *cyl = new Cylinder();
 
     cyl->setLength(2);
     cyl->setSection(1);
     cyl->setCoordinates(
-        15.00f * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT,
-        8.00f * DISTANCE_SUB_UNIT - CENTER_SUB_UNIT,
+        CENTER_SUB_UNIT,
+        CENTER_SUB_UNIT,
         10.0f);
-    cyl->setOrientation(90.0f, new float[3]{0.0f, 1.0f, 0.0f});
+
+    if (orientation == 'W' || orientation == 'E') cyl->setOrientation(90.0f, new float[3]{0.0f, 1.0f, 0.0f});
+    else if (orientation == 'N' || orientation == 'S') cyl->setOrientation(00.0f, new float[3]{0.0f, 1.0f, 0.0f});
 
     cyl->draw();
     delete cyl;
-    */
     glEnable(GL_TEXTURE_2D);
 }
 
@@ -42,6 +43,8 @@ void Bullet::integrate (long t) {
     else if (state == MOVE && t >= time_remaining) {
         x = x + vx * time_remaining;
         y = y + vy * time_remaining;
-        state = QUIET;    
+        this->state = QUIET; 
+        x = round(x); 
+        y = round(y);   
     }
 }

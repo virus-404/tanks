@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <stdlib.h>
 #include "assets/maze.cpp"
 #include "assets/texture.cpp"
 #include "bullet.h"
@@ -18,7 +19,7 @@ class Board {
     void setPositionBoard(int, int, char);
     int getTranslationX();
     int getTranslationY();
-    void pushBullet(Bullet *, char);
+    void pushBullet(Bullet *);
     vector<int> bulletFinalCoordinates(int, int, char);
     Bullets getBullets();
     char winner = ' ';

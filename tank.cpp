@@ -87,7 +87,10 @@ void Tank::keyPressed(unsigned char key, Board *board) {
             orientation = alpha - 90;
             initRotation(orientation, 1000);
         } else if (key == ' ') {
-            board->pushBullet(new Bullet(round(x), round(y), id));
+            if      (mod(orientation, 360) == 0) board->pushBullet(new Bullet(round(this->x + 1), round(this->y), this->id, 'E'));
+            else if (mod(orientation, 360) == 90) board->pushBullet(new Bullet(round(this->x), round(this->y + 1), this->id, 'N'));
+            else if (mod(orientation, 360) == 180) board->pushBullet(new Bullet(round(this->x - 1), round(this->y), this->id, 'W'));
+            else if (mod(orientation, 360) == 270) board->pushBullet(new Bullet(round(this->x), round(this->y - 1), this->id, 'S'));
         } 
     }
 }

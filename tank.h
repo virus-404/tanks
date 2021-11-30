@@ -4,11 +4,10 @@
 #include "opengl.h"
 #include "bullet.h"
 #include "assets/cylinder.cpp"
+#include "board.h"
 
 #define MAIN_GUN 0x0A
 #define WHEEL 0x00
-
-class Board;  //forward to break cyclic declarations
 
 class Tank {
    private:

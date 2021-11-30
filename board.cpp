@@ -1,7 +1,8 @@
 #include "board.h"
+Maze maze;
 
 Board::Board(int height, int width) {
-    Maze maze;
+    
     Row row = Row(width - 1);
 
     srand(time(0));
@@ -238,13 +239,16 @@ void Board::draw() {
         }
     }
 
-    for (auto &bullet : bulletList) bullet->draw();
-    for (int i = bulletList.size() - 1; i >= 0; i--)
-        if (bulletList[i]->state == QUIET){
-            delete bulletList[i];
-            bulletList.erase(bulletList.begin() + i);
+    for (auto &bullet : bulletList) 
+        bullet->draw();
+
+    for (auto &bullet : bulletList) {
+        if (bullet->state == QUIET) {
+            delete bullet;
+            bullet = nullptr;
         }
-            
+    }
+    bulletList.erase(std::remove(bulletList.begin(), bulletList.end(), nullptr), bulletList.end());
 }
 
 
@@ -273,41 +277,46 @@ void Board::loadTexture(Texture tex, int dim) {
     free(buffer2);
 }
 
-void Board::pushBullet(Bullet *bullet, char orientation){
-    vector<int> u = bulletFinalCoordinates(bullet->x, bullet->x, orientation);
-    bullet->initMovement(u[0], u[1], u[3]*200);
+void Board::pushBullet(Bullet *bullet){
+    vector<int> u = bulletFinalCoordinates((int)bullet->x, (int) bullet->y, bullet->orientation);
+    bullet->initMovement(u[0], u[1], u[3]*100);
     this->bulletList.push_back(bullet);
 }
 
 vector<int> Board::bulletFinalCoordinates(int x, int y, char orientation){
-    vector<int> calc = {0,0,0};
+    int i = x; 
+    int j = y;
+    int calc [] = {0,0,0};
+
     switch (orientation) {
         case 'N':
-            while (map[x+1][y] == ' ') {
-                calc[1]++;
-                x++;
+            while (map[i][j] == ' ') {
+                calc[1] = calc[1] + 1;
+                j++;
             }
             break;
         case 'E':
-            while (map[x][y+1] == ' ') {
-                calc[0]++;
-                y++;
+            while (map[i][j] == ' ') {
+                calc[0] =  calc[0] + 1;
+                i++;
             }
+            break;
         case 'S':
-            while (map[x-1][y] == ' ') {
-                calc[1]--;
-                x--;
+            while (map[i][j] == ' ') {
+                calc[1] = calc[1] - 1;
+                j--;
             }
             break;
         case 'W':
-            while (map[x][y-1] == ' ') {
-                calc[0]--;
-                y--;
+            while (map[i][j] == ' ') {
+                calc[0] = calc[0] - 1;
+                i--;
             }
             break;
     }
-    calc[2] = abs(calc[0]) + abs(calc[1]);
-    return calc;
+    calc[2] = calc[0] + calc[1];
+    if (calc[2] < 0) calc[2] = -calc[2];
+    return {calc[0], calc[1], calc[2]};
 }
 
 vector<Bullet*> Board::getBullets(){

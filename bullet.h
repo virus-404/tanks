@@ -1,7 +1,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-class Cylinder;
+#include "assets/cylinder.h"
 
 class Bullet {
    private:
@@ -12,7 +12,8 @@ class Bullet {
    public:
     float x, y;
     int state;
-    Bullet(float, float, char);
+    char orientation;
+    Bullet(float, float, char, char);
     void draw();
     void integrate(long);
     void initMovement(int, int, int);
