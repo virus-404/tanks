@@ -241,14 +241,14 @@ void Board::draw() {
 
     for (auto &bullet : bulletList) 
         bullet->draw();
-    /*    
+       
     for (auto &bullet : bulletList) {
         if (bullet->state == QUIET) {
             delete bullet;
             bullet = nullptr;
         }
     }
-    bulletList.erase(std::remove(bulletList.begin(), bulletList.end(), nullptr), bulletList.end()); */
+    bulletList.erase(std::remove(bulletList.begin(), bulletList.end(), nullptr), bulletList.end()); 
 }
 
 

@@ -6,7 +6,6 @@
 class Bullet {
    private:
     float vx, vy;
-    char shooter;
     long time_remaining;
     int translationX; 
     int translationY;
@@ -14,7 +13,7 @@ class Bullet {
    public:
     float x, y;
     int state;
-    char orientation;
+    char orientation, shooter;
     Bullet(float, float, char, char);
     void draw();
     void integrate(long);

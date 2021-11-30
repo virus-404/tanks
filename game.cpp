@@ -3,13 +3,12 @@
 
 #include <chrono>
 #include <ctime>
-
 #include <iostream>
 
 #include "./opengl.h"
 #include "board.cpp"
-#include "tank.cpp"
 #include "bullet.cpp"
+#include "tank.cpp"
 
 using namespace std;
 
@@ -18,6 +17,8 @@ long last_t = 0;
 int anglealpha = 0;
 int anglebeta = 0;
 std::clock_t init;
+std::clock_t init_p;
+std::clock_t init_e;
 
 Board *board;
 Tank *player;
@@ -44,12 +45,12 @@ int main(int argc, char *argv[]) {
     init = std::clock();
 
 
-    player->setPosition(1, ROWS - 1);
     player->setTranslation(board->getTranslationX(), board->getTranslationY());
+    player->setPosition(1, ROWS - 1);
     board->setPositionBoard(1, ROWS - 1, 'P');
 
-    enemy->setPosition(COLUMNS - 2, 1);
     enemy->setTranslation(board->getTranslationX(), board->getTranslationY());
+    enemy->setPosition(COLUMNS - 2, 1);
     board->setPositionBoard(COLUMNS - 2, 1, 'E');
 
     glutInit(&argc, argv);
@@ -114,8 +115,22 @@ void display() {
     glLineWidth(2.0);
 
     std::clock_t end = std::clock();
-    int seconds = 60*3 - mod((end - init) / CLOCKS_PER_SEC, 60);
+    if (player->getState() == DEAD)
+        if (mod((end - init_p) / CLOCKS_PER_SEC, 60) == 2){
+            player->setState(QUIET);
+            player->setPosition(1, ROWS - 1);
+            board->setPositionBoard(1, ROWS - 1, 'P');
+        }
 
+    if (enemy->getState() == DEAD) {
+        if (mod((end - init_e) / CLOCKS_PER_SEC, 60) == 2) {
+            enemy->setState(QUIET);
+            enemy->setPosition(COLUMNS - 2, 1);
+            board->setPositionBoard(COLUMNS - 2, 1, 'E');
+        }
+    }
+
+    int seconds = 60 * 3 - mod((end - init) / CLOCKS_PER_SEC, 60);
     GLfloat material[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, material);
 
@@ -196,12 +211,13 @@ void positionObserver(float alpha, float beta, int radi) {
 
 void moveEnemy() {
     if (enemy->getState() != QUIET) return;
-    int direction[4];
-    direction[0] = 0;  // w
-    direction[1] = 1;  // d
-    direction[2] = 2;  // a
+    int action[4];
+    action[0] = 0;  // w
+    action[1] = 1;  // d
+    action[2] = 2;  // a
+    action[3] = 3;  // ' '
 
-    switch (direction[rand() & 3]) {
+    switch (action[rand() % 5]) {
         case 0:
             enemy->keyPressed('w', board);
             break;
@@ -210,6 +226,9 @@ void moveEnemy() {
             break;
         case 2:
             enemy->keyPressed('a', board);
+            break;
+        case 3:
+            enemy->keyPressed(' ', board);
             break;
     }
 }
@@ -228,9 +247,21 @@ void idle() {
     if (last_t == 0)
         last_t = t;
     else {
+        for (auto &bullet : board->getBullets()) {
+            bullet->integrate(t - last_t);
+            if ((int)round(bullet->x) == board->posE[0] && (int)round(bullet->y) == board->posE[1] && bullet->shooter == 'P') {
+                enemy->setState(DEAD);
+                board->setPositionBoard(-1, -1, 'E');
+                init_e = std::clock();
+            }
+            if ((int)round(bullet->x) == board->posP[0] && (int)round(bullet->y) == board->posP[1] && bullet->shooter == 'E') {
+                player->setState(DEAD);
+                board->setPositionBoard(-2, -2, 'P');
+                init_p = std::clock();
+            }
+        }
         player->integrate(t - last_t);
         enemy->integrate(t - last_t);
-        for (auto &bullet : board->getBullets()) bullet->integrate(t - last_t);
         last_t = t;
     }
 

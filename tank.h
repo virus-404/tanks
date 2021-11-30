@@ -32,6 +32,7 @@ class Tank {
    public:
     Tank(float *, char);
     int getState();
+    void setState(int);
     void setPosition(int, int);
     void setTranslation(int, int);
     void integrate(long);

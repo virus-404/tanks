@@ -23,10 +23,10 @@ class Board {
     vector<int> bulletFinalCoordinates(int, int, char);
     Bullets getBullets();
     char winner = ' ';
-
-   private:
     int posP[2] = {};
     int posE[2] = {};
+
+   private:
     Map map;
     Bullets bulletList;
     Texture *wallTex;

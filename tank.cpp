@@ -11,7 +11,9 @@ Tank::Tank(float *color, char id) {
 int Tank::getState() {
     return this->state;
 }
-
+void Tank::setState(int state){
+    this->state = state;
+}
 // Set initial position of the player.
 void Tank::setPosition(int x, int y) {
     this->x = x;
@@ -55,6 +57,7 @@ void Tank::integrate(long t) {
 }
 
 void Tank::keyPressed(unsigned char key, Board *board) {
+    if (state == DEAD) return;
     if (key == 'w') {
         int delta_x = 0;
         int delta_y = 0;
@@ -105,6 +108,8 @@ void Tank::setTranslation(int translationX, int translationY) {
 }
 
 void Tank::draw() {
+    if(state == DEAD) return;
+    
     int edges = 8;  //number of edges in a cube
     int hull[edges][3] = {
         {4, 12, 8},   // a
