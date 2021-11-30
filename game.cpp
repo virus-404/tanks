@@ -94,13 +94,13 @@ void display() {
 
     position[0] = 0;
     position[1] = 0;
-    position[2] = 0;
-    position[3] = 1;
+    position[2] = 60;
+    position[3] = 60;
     glLightfv(GL_LIGHT0, GL_POSITION, position);
 
-    color[0] = 0.1;
-    color[1] = 0.1;
-    color[2] = 0.1;
+    color[0] = 0.01;
+    color[1] = 0.01;
+    color[2] = 0.01;
     color[3] = 1;
     glLightfv(GL_LIGHT0, GL_AMBIENT, color);
     glEnable(GL_LIGHT0);
